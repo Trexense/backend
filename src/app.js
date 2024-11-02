@@ -3,6 +3,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const errorHandler = require('./middlewares/error');
 const router = require('./routes/index');
+const config = require('./configs/index');
 
 const app = express();
 
@@ -15,8 +16,8 @@ app.get('/', (req, res) => {
 	res.send('Hewoo Wudd');
 });
 
-app.listen(3000, () => {
-	console.log('Server running on port 3000');
+app.listen(config.port, () => {
+	console.log(`Server running on port ${config.port}`);
 });
 
 app.use(router);
