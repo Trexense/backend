@@ -25,6 +25,27 @@ const register = async (body) => {
 	});
 };
 
+const login = async (body) => {
+	const user = await existingUser(body.email);
+	if (!user) {
+		throw new ApiError(
+			httpStatus.status.UNAUTHORIZED,
+			'Incorrect email or password'
+		);
+	}
+
+	const validPassword = await bcrypt.compare(body.password, user.password);
+	if (!validPassword) {
+		throw new ApiError(
+			httpStatus.status.UNAUTHORIZED,
+			'Incorrect email or password'
+		);
+	}
+
+	return user;
+};
+
 module.exports = {
 	register,
+	login,
 };
