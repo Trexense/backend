@@ -17,7 +17,6 @@ app.use(morgan('dev'));
 // Route untuk Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Root route
 app.get('/', (req, res) => {
 	res.send('Hewoo Wudd');
 });
