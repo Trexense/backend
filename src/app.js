@@ -19,6 +19,7 @@ passport.use('jwt-access', accessStrategy);
 passport.use('jwt-refresh', refreshStrategy);
 
 app.use(cors());
+app.use('*', cors());
 app.use(morgan('dev'));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -29,9 +30,7 @@ app.get('/', (req, res) => {
 
 app.listen(config.port, () => {
 	console.log(`Server running on port ${config.port}`);
-	console.log(
-		`Swagger UI tersedia di http://localhost:${config.port}/api-docs`
-	);
+	console.log(`Swagger docs: http://localhost:${config.port}/api-docs`);
 });
 
 app.use(router);
