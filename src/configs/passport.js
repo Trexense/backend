@@ -24,7 +24,7 @@ const verifyAccessToken = async (payload, done) => {
 			return done(null, false, { message: 'User not found' });
 		}
 
-		done(null, JSON.stringify(user));
+		done(null, user);
 	} catch (error) {
 		done(error, false);
 	}
@@ -46,7 +46,7 @@ const verifyRefreshToken = async (payload, done) => {
 			return done(null, false, { message: 'User not found' });
 		}
 
-		done(null, JSON.stringify(user));
+		done(null, user);
 	} catch (error) {
 		done(error, false);
 	}

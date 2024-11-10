@@ -10,7 +10,9 @@ const generateAccessToken = (userId, name, role) => {
 		type: tokenType.ACCESS,
 	};
 
-	return jwt.sign(payload, config.jwt.secret);
+	return jwt.sign(payload, config.jwt.secret, {
+		expiresIn: config.jwt.access.expires,
+	});
 };
 
 const generateRefreshToken = (userId, name, role) => {
@@ -21,7 +23,9 @@ const generateRefreshToken = (userId, name, role) => {
 		type: tokenType.REFRESH,
 	};
 
-	return jwt.sign(payload, config.jwt.secret);
+	return jwt.sign(payload, config.jwt.secret, {
+		expiresIn: config.jwt.refresh.expires,
+	});
 };
 
 const generateAuthToken = (userId, name) => {
