@@ -13,7 +13,7 @@ router
 	.route('/login')
 	.post(validate(authValidation.login), authController.login);
 router
-	.route('sendVerificationEmail')
+	.route('/verifyEmail')
 	.get(authEmail, authController.sendEmailVerification);
 
 module.exports = router;
