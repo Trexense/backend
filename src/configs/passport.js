@@ -52,10 +52,34 @@ const verifyRefreshToken = async (payload, done) => {
 	}
 };
 
+const verifyEmailToken = async (payload, done) => {
+	try {
+		if (payload.type !== tokenType.VERIFY_EMAIL) {
+			return done(null, false, { message: 'Invalid token type' });
+		}
+
+		const user = await prisma.user.findFirst({
+			where: {
+				id: payload.userId,
+			},
+		});
+
+		if (!user) {
+			return done(null, false, { message: 'User not found' });
+		}
+
+		done(null, user);
+	} catch (error) {
+		done(error, false);
+	}
+};
+
 const accessStrategy = new JwtStrategy(jwtOption, verifyAccessToken);
 const refreshStrategy = new JwtStrategy(jwtOption, verifyRefreshToken);
+const emailStrategy = new JwtStrategy(jwtOption, verifyEmailToken);
 
 module.exports = {
 	accessStrategy,
 	refreshStrategy,
+	emailStrategy,
 };

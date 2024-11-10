@@ -55,8 +55,24 @@ const authRefresh = (req, res, next) => {
 	)(req, res, next);
 };
 
+const authEmail = (req, res, next) => {
+	passport.authenticate('jwt-email', { session: false }, (err, user, info) => {
+		if (err || !user) {
+			return next(
+				new ApiError(
+					httpStatus.status.UNAUTHORIZED,
+					info.message || 'Unauthorized'
+				)
+			);
+		}
+		req.user = user;
+		next();
+	})(req, res, next);
+};
+
 module.exports = {
 	authAccess,
 	authAdmin,
 	authRefresh,
+	authEmail,
 };

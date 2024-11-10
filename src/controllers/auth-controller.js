@@ -31,6 +31,14 @@ const login = catchAsync(async (req, res) => {
 	});
 });
 
+const sendEmailVerification = catchAsync(async (req, res) => {
+	await authService.sendEmailVerification(req.user.id, req.user.email);
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Verification email sent',
+	});
+});
+
 module.exports = {
 	register,
 	login,

@@ -13,5 +13,12 @@ module.exports = {
 		refresh: {
 			expires: '7d',
 		},
+		verifyEmail: {
+			expires: '15m',
+		},
+	},
+	mail: {
+		user: process.env.EMAIL,
+		pass: process.env.PASSWORD,
 	},
 };

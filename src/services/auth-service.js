@@ -2,6 +2,9 @@ const httpStatus = require('http-status');
 const bcrypt = require('bcrypt');
 const prisma = require('../../prisma/index');
 const ApiError = require('../utils/apiError');
+const nodemailer = require('nodemailer');
+const config = require('../configs/index');
+const { generateVerifyEmailToken } = require('./token-service');
 
 const existingUser = async (email) => {
 	return await prisma.user.findUnique({
@@ -43,6 +46,31 @@ const login = async (body) => {
 	}
 
 	return user;
+};
+
+const sendEmailVerification = async (userId, email) => {
+	const transporter = nodemailer.createTransport({
+		service: 'Gmail',
+		auth: {
+			user: config.mail.user,
+			pass: config.mail.pass,
+		},
+	});
+
+	const token = generateVerifyEmailToken(userId, email);
+	const verificationLink = `${config.backend.url}/verifyEmail?token=${token}`;
+	const mailOption = {
+		from: config.mail.user,
+		to: email,
+		subject: 'Email Verification',
+		html: `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`,
+	};
+
+	try {
+		await transporter.sendMail(mailOption);
+	} catch (error) {
+		throw new ApiError(httpStatus.status.INTERNAL_SERVER_ERROR, error.message);
+	}
 };
 
 module.exports = {
