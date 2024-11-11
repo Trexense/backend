@@ -21,4 +21,7 @@ module.exports = {
 		user: process.env.EMAIL,
 		pass: process.env.PASSWORD,
 	},
+	backend: {
+		url: process.env.BACKEND_URL,
+	},
 };

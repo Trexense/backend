@@ -50,7 +50,7 @@ const login = async (body) => {
 
 const sendEmailVerification = async (userId, email) => {
 	const transporter = nodemailer.createTransport({
-		service: 'Gmail',
+		service: 'gmail',
 		auth: {
 			user: config.mail.user,
 			pass: config.mail.pass,
@@ -73,7 +73,20 @@ const sendEmailVerification = async (userId, email) => {
 	}
 };
 
+const verifyEmail = async (email) => {
+	return await prisma.user.update({
+		where: {
+			email: email,
+		},
+		data: {
+			isEmailVerified: true,
+		},
+	});
+};
+
 module.exports = {
 	register,
 	login,
+	sendEmailVerification,
+	verifyEmail,
 };

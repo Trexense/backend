@@ -2,7 +2,7 @@ const express = require('express');
 const authController = require('../controllers/auth-controller');
 const validate = require('../middlewares/validate');
 const authValidation = require('../validations/auth-validation');
-const { authEmail } = require('../middlewares/auth');
+const { authEmail, authAccess } = require('../middlewares/auth');
 
 const router = express.Router();
 
@@ -13,8 +13,9 @@ router
 	.route('/login')
 	.post(validate(authValidation.login), authController.login);
 router
-	.route('/verifyEmail')
-	.get(authEmail, authController.sendEmailVerification);
+	.route('/send-verify-email')
+	.post(authAccess, authController.sendEmailVerification);
+router.route('/verify-email').get(authEmail, authController.verifyEmail);
 
 module.exports = router;
 

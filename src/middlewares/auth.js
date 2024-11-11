@@ -61,7 +61,7 @@ const authEmail = (req, res, next) => {
 			return next(
 				new ApiError(
 					httpStatus.status.UNAUTHORIZED,
-					info.message || 'Unauthorized'
+					info?.message || 'Unauthorized'
 				)
 			);
 		}

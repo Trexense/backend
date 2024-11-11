@@ -8,6 +8,11 @@ const jwtOption = {
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 };
 
+const emailOption = {
+	secretOrKey: config.jwt.secret,
+	jwtFromRequest: ExtractJwt.fromUrlQueryParameter('token'),
+};
+
 const verifyAccessToken = async (payload, done) => {
 	try {
 		if (payload.type !== tokenType.ACCESS) {
@@ -76,7 +81,7 @@ const verifyEmailToken = async (payload, done) => {
 
 const accessStrategy = new JwtStrategy(jwtOption, verifyAccessToken);
 const refreshStrategy = new JwtStrategy(jwtOption, verifyRefreshToken);
-const emailStrategy = new JwtStrategy(jwtOption, verifyEmailToken);
+const emailStrategy = new JwtStrategy(emailOption, verifyEmailToken);
 
 module.exports = {
 	accessStrategy,
