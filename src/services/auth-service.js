@@ -58,12 +58,25 @@ const sendEmailVerification = async (userId, email) => {
 	});
 
 	const token = generateVerifyEmailToken(userId, email);
-	const verificationLink = `${config.backend.url}/verifyEmail?token=${token}`;
+	const verificationLink = `${config.backend.url}/auth/verify-email?token=${token}`;
 	const mailOption = {
 		from: config.mail.user,
 		to: email,
-		subject: 'Email Verification',
-		html: `<p>Click <a href="${verificationLink}">here</a> to verify your email.</p>`,
+		subject: 'Verify Your Email Address',
+		html: `
+			<div style="font-family: Arial, sans-serif; color: #333333; background-color: #f8f8f8; padding: 20px; text-align: center;">
+				<div style="background-color: #ffffff; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; border: 1px solid #dddddd;">
+					<h2 style="color: #333333;">Email Verification</h2>
+					<p style="font-size: 16px;">Thank you for registering! Please verify your email address to complete the process.</p>
+					<a href="${verificationLink}" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 20px;">Verify Email</a>
+					<p style="font-size: 14px; color: #555555; margin-top: 20px;">This link will expire in <strong>15 minutes</strong>.</p>
+					<div style="margin-top: 20px; font-size: 12px; color: #777777;">
+						<p>If you did not request this, please ignore this email.</p>
+						<p>Best regards,<br>Trexense Team</p>
+					</div>
+				</div>
+			</div>
+		`,
 	};
 
 	try {
