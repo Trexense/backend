@@ -58,7 +58,7 @@ const sendEmailVerification = async (userId, email) => {
 	});
 
 	const token = generateVerifyEmailToken(userId, email);
-	const verificationLink = `${config.backend.url}/auth/verify-email?token=${token}`;
+	const verificationLink = `${config.backend.url}/auth/verification/email/confirm?token=${token}`;
 	const mailOption = {
 		from: config.mail.user,
 		to: email,

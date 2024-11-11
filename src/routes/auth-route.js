@@ -13,9 +13,11 @@ router
 	.route('/login')
 	.post(validate(authValidation.login), authController.login);
 router
-	.route('/send-verify-email')
+	.route('/verification/email/send')
 	.post(authAccess, authController.sendEmailVerification);
-router.route('/verify-email').get(authEmail, authController.verifyEmail);
+router
+	.route('/verification/email/confirm')
+	.get(authEmail, authController.verifyEmail);
 
 module.exports = router;
 
@@ -63,7 +65,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /register:
+ * /auth/register:
  *   post:
  *     summary: Create a new user
  *     tags: [Auth]
@@ -116,7 +118,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /login:
+ * /auth/login:
  *   post:
  *     summary: Login from existing user
  *     tags: [Auth]
@@ -165,4 +167,47 @@ module.exports = router;
  *             example:
  *               status: 500
  *               message: "Internal server error"
+ */
+
+/**
+ * @swagger
+ * /auth/verification/email/send:
+ *   post:
+ *     summary: Send email verification link
+ *     tags: [Auth]
+ *     description: This endpoint sends a verification link to the user's email. The user needs to check their email and click the link to verify their account.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Verification email sent
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 200
+ *               message: "Verification email sent"
+ *       '401':
+ *         description: Unauthorized (Invalid or missing access token)
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 401
+ *               message: "Unauthorized"
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 500
+ *               message: "Internal server error"
+ */
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
