@@ -7,7 +7,11 @@ const swaggerUi = require('swagger-ui-express');
 const { swaggerSpec } = require('./configs/swagger');
 const router = require('./routes/index');
 const config = require('./configs/index');
-const { accessStrategy, refreshStrategy } = require('./configs/passport');
+const {
+	accessStrategy,
+	refreshStrategy,
+	emailStrategy,
+} = require('./configs/passport');
 
 const app = express();
 
@@ -17,6 +21,7 @@ app.use(express.json());
 app.use(passport.initialize());
 passport.use('jwt-access', accessStrategy);
 passport.use('jwt-refresh', refreshStrategy);
+passport.use('jwt-email', emailStrategy);
 
 app.use(cors());
 app.use('*', cors());

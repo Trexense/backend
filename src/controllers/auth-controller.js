@@ -31,7 +31,51 @@ const login = catchAsync(async (req, res) => {
 	});
 });
 
+const sendEmailVerification = catchAsync(async (req, res) => {
+	await authService.sendEmailVerification(req.user.id, req.user.email);
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Verification email sent',
+	});
+});
+
+const verifyEmail = catchAsync(async (req, res) => {
+	const result = await authService.verifyEmail(req.user.email);
+	res.status(httpStatus.status.OK).send(`
+    <html>
+        <head>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    font-family: Arial, sans-serif;
+                }
+                .message-container {
+                    text-align: center;
+                }
+                h1 {
+                    color: #4CAF50;
+                }
+                p {
+                    color: #333;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="message-container">
+                <h1>Email Verification Successful</h1>
+                <p>Thank you, ${result.name}. Your email has been successfully verified!</p>
+            </div>
+        </body>
+    </html>
+`);
+});
+
 module.exports = {
 	register,
 	login,
+	sendEmailVerification,
+	verifyEmail,
 };

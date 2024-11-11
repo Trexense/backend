@@ -28,6 +28,17 @@ const generateRefreshToken = (userId, name, role) => {
 	});
 };
 
+const generateVerifyEmailToken = (userId, name) => {
+	const payload = {
+		userId: userId,
+		type: tokenType.VERIFY_EMAIL,
+	};
+
+	return jwt.sign(payload, config.jwt.secret, {
+		expiresIn: config.jwt.verifyEmail.expires,
+	});
+};
+
 const generateAuthToken = (userId, name) => {
 	const accessToken = generateAccessToken(userId, name);
 	const refreshToken = generateRefreshToken(userId, name);
@@ -39,4 +50,5 @@ const generateAuthToken = (userId, name) => {
 
 module.exports = {
 	generateAuthToken,
+	generateVerifyEmailToken,
 };
