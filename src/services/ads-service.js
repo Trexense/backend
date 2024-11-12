@@ -65,7 +65,6 @@ const uploadImage = async (resizedImage) => {
 
 const processAndUpload = async (image) => {
 	const isSafe = await filterImage(image.buffer);
-	console.log(isSafe);
 	if (!isSafe) {
 		throw new ApiError(
 			httpStatus.status.BAD_REQUEST,

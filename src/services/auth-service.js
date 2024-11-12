@@ -14,6 +14,7 @@ const existingUser = async (email) => {
 	});
 };
 
+// 6. masuk sini
 const register = async (body) => {
 	const userExist = await existingUser(body.email);
 
@@ -25,7 +26,7 @@ const register = async (body) => {
 
 	return await prisma.user.create({
 		data: body,
-	});
+	}); // 7. pas udah dibikin usernyha langsung return terus balik lagi ke controllers/auth-controller.js
 };
 
 const login = async (body) => {

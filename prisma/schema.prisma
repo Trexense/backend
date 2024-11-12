@@ -34,7 +34,8 @@
     description       String
     startDate         DateTime
     targetUrl         String
-    isActive          Boolean      @default(true)
+    bannerDuration    String 
+    isActive          Boolean      @default(false)
     isPaid            Boolean      @default(false)
     createdAt         DateTime     @default(now())
     updatedAt         DateTime     @updatedAt

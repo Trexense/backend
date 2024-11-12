@@ -24,4 +24,6 @@ defaultRoutes.forEach((route) => {
 	router.use(route.path, route.route);
 });
 
+// 2. ini dipake buat looping defaultroutes diatas misal ke localhost:8080/auth nanti langsung ke route yg ada di auth, lanjut ke routes/auth-route.js
+
 module.exports = router;
