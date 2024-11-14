@@ -60,7 +60,7 @@ module.exports = router;
  * @swagger
  * tags:
  *   name: Auth
- *   description: The Auth managing API
+ *   description: Auth management API
  */
 
 /**
