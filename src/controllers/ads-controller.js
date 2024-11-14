@@ -11,8 +11,9 @@ const uploadBanner = catchAsync(async (req, res) => {
 			'Please upload image files'
 		);
 	}
-	const result = await adsService.processAndUpload(image);
+	const body = Object.assign({}, req.body);
 
+	const result = await adsService.saveAdBanner(image, body);
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
 		message: 'Success',

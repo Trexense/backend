@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const { Storage } = require('@google-cloud/storage');
 const ApiError = require('../utils/apiError');
 const config = require('../configs/index');
+const prisma = require('../../prisma');
 const credentialsJson = Buffer.from(config.gcp.credential, 'base64').toString(
 	'utf-8'
 );
@@ -61,23 +62,38 @@ const uploadImage = async (resizedImage) => {
 	stream.on('error', (err) => {
 		console.error(`Failed to upload file: ${err.message}`);
 	});
+
+	return uniqueFileName;
 };
 
 const processAndUpload = async (image) => {
-	const isSafe = await filterImage(image.buffer);
-	if (!isSafe) {
-		throw new ApiError(
-			httpStatus.status.BAD_REQUEST,
-			'The image contains negative content'
-		);
+	try {
+		const isSafe = await filterImage(image.buffer);
+		if (!isSafe) {
+			throw new ApiError(
+				httpStatus.status.BAD_REQUEST,
+				'The image contains negative content'
+			);
+		}
+
+		const resizedImage = await resizeImage(image, 1200, 600);
+		const fileName = await uploadImage(resizedImage);
+		return fileName;
+	} catch (error) {
+		throw new ApiError(httpStatus.status.INTERNAL_SERVER_ERROR, error.message);
 	}
+};
 
-	const resizedImage = await resizeImage(image, 1200, 600);
-	await uploadImage(resizedImage);
-
-	return 'Upload Success';
+const saveAdBanner = async (image, body) => {
+	const fileName = await processAndUpload(image);
+	const url = `https://storage.googleapis.com/${config.gcp.bucket}/${fileName}`;
+	body.bannerDuration = Number(body.bannerDuration);
+	return await prisma.bannerAds.create({
+		data: { imageUrl: url, ...body },
+	});
 };
 
 module.exports = {
 	processAndUpload,
+	saveAdBanner,
 };
