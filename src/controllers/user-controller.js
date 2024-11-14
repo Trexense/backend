@@ -33,7 +33,7 @@ const requestResetPassword = catchAsync(async (req, res) => {
 	await userService.requestResetPassword(req.params.userId, req.body.password);
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
-		message: 'Password reset link has been sent.',
+		message: 'Password reset link sent.',
 	});
 });
 

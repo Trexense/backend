@@ -22,6 +22,9 @@ const getUserById = async (userId) => {
 
 const updateUser = async (userId, updateBody) => {
 	await getUserById(userId);
+	if (updateBody.email) {
+		updateBody.isEmailVerified = false;
+	}
 	return await prisma.user.update({
 		where: {
 			id: userId,
