@@ -1,11 +1,9 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const authService = require('../services/auth-service');
-const tokenService = require('../services/token-service');
+const userService = require('../services/user-service');
 
-const register = catchAsync(async (req, res) => {
-	const result = await authService.register(req.body);
-
+const getUser = catchAsync(async (req, res) => {
+	const result = await userService.getUserById(req.params.userId);
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
 		message: 'Success',
@@ -13,34 +11,35 @@ const register = catchAsync(async (req, res) => {
 	});
 });
 
-const login = catchAsync(async (req, res) => {
-	const result = await authService.login(req.body);
-	const { accessToken, refreshToken } = tokenService.generateAuthToken(
-		result.id,
-		result.name
-	);
-
+const updateUser = catchAsync(async (req, res) => {
+	const result = await userService.updateUser(req.params.userId, req.body);
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
 		message: 'Success',
 		data: result,
-		tokens: {
-			access: accessToken,
-			refresh: refreshToken,
-		},
 	});
 });
 
-const sendEmailVerification = catchAsync(async (req, res) => {
-	await authService.sendEmailVerification(req.user.id, req.user.email);
+const deleteUser = catchAsync(async (req, res) => {
+	const result = await userService.deleteUser(req.params.userId);
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
-		message: 'Verification email sent',
+		message: 'User deleted successfully',
+		data: result,
 	});
 });
 
-const verifyEmail = catchAsync(async (req, res) => {
-	const result = await authService.verifyEmail(req.user.email);
+const requestResetPassword = catchAsync(async (req, res) => {
+	await userService.requestResetPassword(req.params.userId, req.body.password);
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Password reset link has been sent.',
+	});
+});
+
+const resetPassword = catchAsync(async (req, res) => {
+	const result = await userService.resetPassword(req.user.id, req.password);
+
 	res.status(httpStatus.status.OK).send(`
     <html>
         <head>
@@ -65,8 +64,8 @@ const verifyEmail = catchAsync(async (req, res) => {
         </head>
         <body>
             <div class="message-container">
-                <h1>Email Verification Successful</h1>
-                <p>Thank you, ${result.name}. Your email has been successfully verified!</p>
+                <h1>Password Reset Successful</h1>
+                <p>Thank you, ${result.name}. Your password has been successfully reset!</p>
             </div>
         </body>
     </html>
@@ -74,8 +73,9 @@ const verifyEmail = catchAsync(async (req, res) => {
 });
 
 module.exports = {
-	register,
-	login,
-	sendEmailVerification,
-	verifyEmail,
+	getUser,
+	updateUser,
+	deleteUser,
+	requestResetPassword,
+	resetPassword,
 };

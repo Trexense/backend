@@ -28,9 +28,10 @@ const generateRefreshToken = (userId, name, role) => {
 	});
 };
 
-const generateVerifyEmailToken = (userId, name) => {
+const generateVerifyEmailToken = (userId, email) => {
 	const payload = {
 		userId: userId,
+		email: email,
 		type: tokenType.VERIFY_EMAIL,
 	};
 
@@ -48,7 +49,20 @@ const generateAuthToken = (userId, name) => {
 	};
 };
 
+const generateResetPasswordToken = (userId, newPassword) => {
+	const payload = {
+		userId: userId,
+		newPassword: newPassword,
+		type: tokenType.RESET_PASSWORD,
+	};
+
+	return jwt.sign(payload, config.jwt.secret, {
+		expiresIn: config.jwt.resetPassword.expires,
+	});
+};
+
 module.exports = {
 	generateAuthToken,
 	generateVerifyEmailToken,
+	generateResetPasswordToken,
 };

@@ -16,31 +16,7 @@ const login = {
 	}),
 };
 
-const updateUser = {
-	body: Joi.object().keys({
-	  email: Joi.string().email(),
-	  name: Joi.string(),
-	  password: Joi.string().custom(password),
-	}),
-  };
-  
-  const resetPasswordRequest = {
-	body: Joi.object().keys({
-	  email: Joi.string().required().email(),
-	}),
-  };
-  
-  const resetPassword = {
-	body: Joi.object().keys({
-	  token: Joi.string().required(),
-	  password: Joi.string().required().custom(password),
-	}),
-  };
-
 module.exports = {
 	register,
 	login,
-	updateUser,
-	resetPasswordRequest,
-	resetPassword,
 };

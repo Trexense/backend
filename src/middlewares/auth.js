@@ -100,9 +100,12 @@ const authEmail = (req, res, next) => {
 };
 
 const authResetPassword = (req, res, next) => {
-    passport.authenticate('resetpassword', { session: false }, (err, user, info) => {
-        if (err || !user) {
-            return res.status(httpStatus.status.UNAUTHORIZED).send(`
+	passport.authenticate(
+		'jwt-password',
+		{ session: false },
+		(err, data, info) => {
+			if (err || !data) {
+				return res.status(httpStatus.status.UNAUTHORIZED).send(`
                 <html>
                     <head>
                         <style>
@@ -129,18 +132,20 @@ const authResetPassword = (req, res, next) => {
                         <div class="message-container">
                             <h1>Unauthorized</h1>
                             <p>${
-                                info?.message === 'jwt expired'
-                                    ? 'Reset password link expired. Please request a new reset password email.'
-                                    : 'You do not have access to this page.'
-                            }</p>
+															info?.message === 'jwt expired'
+																? 'Reset password link expired. Please request a new reset password email.'
+																: 'You do not have access to this page.'
+														}</p>
                         </div>
                     </body>
                 </html>
             `);
-        }
-        req.user = user;
-        next();
-    })(req, res, next);
+			}
+			req.user = data.user;
+			req.password = data.newPassword;
+			next();
+		}
+	)(req, res, next);
 };
 
 module.exports = {

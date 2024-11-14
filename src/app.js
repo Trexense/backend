@@ -11,6 +11,7 @@ const {
 	accessStrategy,
 	refreshStrategy,
 	emailStrategy,
+	passwordStrategy,
 } = require('./configs/passport');
 
 const app = express();
@@ -29,11 +30,11 @@ app.use(
 	})
 );
 
-//  ini buat ini passportnya nanti biar langsung dipake di routes
 app.use(passport.initialize());
-passport.use('jwt-access', accessStrategy); //jwt-access tuh nanti dipakenya pake nama itu, terus accessStrategy konfigurasinya
+passport.use('jwt-access', accessStrategy);
 passport.use('jwt-refresh', refreshStrategy);
 passport.use('jwt-email', emailStrategy);
+passport.use('jwt-password', passwordStrategy);
 
 app.use(cors());
 app.use('*', cors());

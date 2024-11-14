@@ -2,13 +2,10 @@ const express = require('express');
 const authController = require('../controllers/auth-controller');
 const validate = require('../middlewares/validate');
 const authValidation = require('../validations/auth-validation');
-const { authEmail, authAccess,authResetPassword } = require('../middlewares/auth');
+const { authEmail, authAccess } = require('../middlewares/auth');
 
 const router = express.Router();
 
-// 3. validate disini buat validasi inputan dari user, misal masuk ke endpoint /register nanti di cek harus wajib sesuai kriteria, semisal buat login gaada email nanti langsung di throw error sama si middleware validatenya
-// cukup bikin schemanya aja di folder validations, kita pake library joi cukup simple ko, kodingan yang validate.js sama pick.js cuekin aja.
-// nanti tinggal pake aja validate(nama schema). dari sini lanjut misal kita mau register, lanjut ke controllers/auth-controller.js
 router
 	.route('/register')
 	.post(validate(authValidation.register), authController.register);
@@ -21,25 +18,6 @@ router
 router
 	.route('/verification/email/confirm')
 	.get(authEmail, authController.verifyEmail);
-
-router
-	.route('/user')
-	.get(authAccess, authController.getUser)
-	.patch(authAccess, validate(authValidation.updateUser), authController.updateUser)
-	.delete(authAccess, authController.deleteUser);
-  
-router
-	.route('/reset-password')
-	.post(validate(authValidation.resetPasswordRequest), authController.requestResetPassword);
-
-router
-	.route('/reset-password/confirm')
-	.post(
-		authResetPassword,
-		validate(authValidation.resetPassword),
-		authController.resetPassword
-	);
-
 
 module.exports = router;
 
