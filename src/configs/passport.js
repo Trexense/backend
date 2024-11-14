@@ -79,16 +79,36 @@ const verifyEmailToken = async (payload, done) => {
 	}
 };
 
+const verifyResetPasswordToken = async (payload, done) => {
+	try {
+		if (payload.type !== tokenType.RESET_PASSWORD) {
+			return done(null, false, { message: 'Invalid token type' });
+		}
+
+		const user = await prisma.user.findFirst({
+			where: {
+				id: payload.userId,
+			},
+		});
+
+		if (!user) {
+			return done(null, false, { message: 'User not found' });
+		}
+
+		done(null, { user, newPassword: payload.newPassword });
+	} catch (error) {
+		done(error, false);
+	}
+};
+
 const accessStrategy = new JwtStrategy(jwtOption, verifyAccessToken);
 const refreshStrategy = new JwtStrategy(jwtOption, verifyRefreshToken);
 const emailStrategy = new JwtStrategy(emailOption, verifyEmailToken);
+const passwordStrategy = new JwtStrategy(emailOption, verifyResetPasswordToken);
 
 module.exports = {
 	accessStrategy,
 	refreshStrategy,
 	emailStrategy,
+	passwordStrategy,
 };
-
-/*
-ini bikin konfigurasi passport buat nanti token jwt
-*/

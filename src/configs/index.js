@@ -16,6 +16,9 @@ module.exports = {
 		verifyEmail: {
 			expires: '15m',
 		},
+		resetPassword: {
+			expires: '30m',
+		},
 	},
 	mail: {
 		user: process.env.EMAIL,
