@@ -29,6 +29,7 @@ const register = async (body) => {
 	}); // 7. pas udah dibikin usernyha langsung return terus balik lagi ke controllers/auth-controller.js
 };
 
+
 const login = async (body) => {
 	const user = await existingUser(body.email);
 	if (!user) {
@@ -98,9 +99,55 @@ const verifyEmail = async (email) => {
 	});
 };
 
+const getUserById = async (userId) => {
+	const user = await User.findByPk(userId);
+	if (!user) {
+	  throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+	}
+	return user;
+  };
+  
+  const updateUser = async (userId, updateBody) => {
+	const user = await getUserById(userId);
+	Object.assign(user, updateBody);
+	await user.save();
+	return user;
+  };
+  
+  const deleteUser = async (userId) => {
+	const user = await getUserById(userId);
+	await user.destroy();
+  };
+  
+  const requestResetPassword = async (email) => {
+	const user = await User.findOne({ where: { email } });
+	if (!user) {
+	  throw new ApiError(httpStatus.NOT_FOUND, 'No user found with this email');
+	}
+	
+
+	const resetPasswordToken = await tokenService.generateResetPasswordToken(email);
+
+  };
+  
+  const resetPassword = async (email, newPassword) => {
+	const user = await User.findOne({ where: { email } });
+	if (!user) {
+	  throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+	}
+	
+	user.password = newPassword;
+	await user.save();
+  };
+
 module.exports = {
 	register,
 	login,
 	sendEmailVerification,
 	verifyEmail,
+	getUserById,
+	updateUser,
+	deleteUser,
+	requestResetPassword,
+	resetPassword,
 };

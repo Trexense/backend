@@ -75,9 +75,56 @@ const verifyEmail = catchAsync(async (req, res) => {
 `);
 });
 
+const getUser = catchAsync(async (req, res) => {
+	const user = await authService.getUserById(req.user.id);
+	res.status(httpStatus.status.OK).send({
+	  status: httpStatus.status.OK,
+	  message: 'Success',
+	  data: user
+	});
+  });
+  
+  const updateUser = catchAsync(async (req, res) => {
+	const updatedUser = await authService.updateUser(req.user.id, req.body);
+	res.status(httpStatus.status.OK).send({
+	  status: httpStatus.status.OK,
+	  message: 'Success',
+	  data: updatedUser
+	});
+  });
+  
+  const deleteUser = catchAsync(async (req, res) => {
+	await authService.deleteUser(req.user.id);
+	res.status(httpStatus.status.OK).send({
+	  status: httpStatus.status.OK,
+	  message: 'User deleted successfully'
+	});
+  });
+  
+  const requestResetPassword = catchAsync(async (req, res) => {
+	await authService.requestResetPassword(req.body.email);
+	res.status(httpStatus.status.OK).send({
+	  status: httpStatus.status.OK,
+	  message: 'Password reset email sent'
+	});
+  });
+  
+  const resetPassword = catchAsync(async (req, res) => {
+	await authService.resetPassword(req.user.email, req.body.password);
+	res.status(httpStatus.status.OK).send({
+	  status: httpStatus.status.OK,
+	  message: 'Password reset successfully'
+	});
+  });
+
 module.exports = {
 	register,
 	login,
 	sendEmailVerification,
 	verifyEmail,
+	getUser,
+	updateUser,
+	deleteUser,
+	requestResetPassword,
+	resetPassword,
 };
