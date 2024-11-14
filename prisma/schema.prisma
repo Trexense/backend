@@ -32,9 +32,10 @@
     imageUrl          String       
     title             String
     description       String
-    startDate         DateTime
+    startDate         String
     targetUrl         String
-    isActive          Boolean      @default(true)
+    bannerDuration    Int 
+    isActive          Boolean      @default(false)
     isPaid            Boolean      @default(false)
     createdAt         DateTime     @default(now())
     updatedAt         DateTime     @updatedAt

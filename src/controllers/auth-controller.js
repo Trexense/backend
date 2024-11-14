@@ -3,13 +3,15 @@ const catchAsync = require('../utils/catchAsync');
 const authService = require('../services/auth-service');
 const tokenService = require('../services/token-service');
 
+// 4. masuk kesini
 const register = catchAsync(async (req, res) => {
-	const result = await authService.register(req.body);
+	//catchasync disini fungsinya buat nangkep error, jadi kita gausah trycatch lagi, cuekin aja kodingan catchasync.js nya pokonya di controller sini functionnya bungkus aja pake catchasync ini
+	const result = await authService.register(req.body); // 5. terus pake function yg aku pisahin di folder services, lanjut ke services/auth-service.js
 
 	res.status(httpStatus.status.OK).send({
-		status: httpStatus.status.OK,
+		status: httpStatus.status.OK, // ini pake library httpStatus biar gampang ngatur status codenya
 		message: 'Success',
-		data: result,
+		data: result, //8. hasil return dari function di authService tadi kita kirim sebagai response
 	});
 });
 

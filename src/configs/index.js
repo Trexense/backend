@@ -24,4 +24,8 @@ module.exports = {
 	backend: {
 		url: process.env.BACKEND_URL,
 	},
+	gcp: {
+		credential: process.env.CREDENTIAL,
+		bucket: process.env.BUCKET_NAME,
+	},
 };

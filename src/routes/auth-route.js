@@ -6,6 +6,9 @@ const { authEmail, authAccess } = require('../middlewares/auth');
 
 const router = express.Router();
 
+// 3. validate disini buat validasi inputan dari user, misal masuk ke endpoint /register nanti di cek harus wajib sesuai kriteria, semisal buat login gaada email nanti langsung di throw error sama si middleware validatenya
+// cukup bikin schemanya aja di folder validations, kita pake library joi cukup simple ko, kodingan yang validate.js sama pick.js cuekin aja.
+// nanti tinggal pake aja validate(nama schema). dari sini lanjut misal kita mau register, lanjut ke controllers/auth-controller.js
 router
 	.route('/register')
 	.post(validate(authValidation.register), authController.register);

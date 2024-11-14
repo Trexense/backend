@@ -88,3 +88,7 @@ module.exports = {
 	refreshStrategy,
 	emailStrategy,
 };
+
+/*
+ini bikin konfigurasi passport buat nanti token jwt
+*/

@@ -29,8 +29,9 @@ app.use(
 	})
 );
 
+//  ini buat ini passportnya nanti biar langsung dipake di routes
 app.use(passport.initialize());
-passport.use('jwt-access', accessStrategy);
+passport.use('jwt-access', accessStrategy); //jwt-access tuh nanti dipakenya pake nama itu, terus accessStrategy konfigurasinya
 passport.use('jwt-refresh', refreshStrategy);
 passport.use('jwt-email', emailStrategy);
 
@@ -47,5 +48,6 @@ app.listen(config.port, () => {
 	console.log(`Swagger docs: http://localhost:${config.port}/api-docs`);
 });
 
-app.use(router);
+app.use(router); //1. awalan masuk sini udah pasti ofkors banget, lanjut ke routes/index.js
+
 app.use(errorHandler);
