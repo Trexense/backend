@@ -12,6 +12,19 @@ const uploadBanner = {
 	}),
 };
 
+const updateBanner = {
+	params: Joi.object().keys({
+		bannerId: Joi.string().custom(objectId),
+	}),
+	body: Joi.object().keys({
+		title: Joi.string().optional(),
+		description: Joi.string().optional(),
+		startDate: Joi.string().optional(),
+		targetUrl: Joi.string().optional(),
+	}),
+};
+
 module.exports = {
 	uploadBanner,
+	updateBanner,
 };

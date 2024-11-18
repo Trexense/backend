@@ -112,10 +112,40 @@ const getAllBanners = async () => {
 };
 
 const getBannerById = async (bannerId) => {
-	return await prisma.bannerAds.findFirst({
+	const banner = await prisma.bannerAds.findFirst({
 		where: {
 			id: bannerId,
 		},
+	});
+
+	if (!banner) {
+		throw new ApiError(httpStatus.status.NOT_FOUND, 'Banner not found');
+	}
+
+	return banner;
+};
+
+const deleteBannerById = async (bannerId) => {
+	await getBannerById(bannerId);
+	return await prisma.bannerAds.delete({
+		where: {
+			id: bannerId,
+		},
+	});
+};
+
+const updateBanner = async (bannerId, body, image) => {
+	await getBannerById(bannerId);
+	if (image) {
+		const fileName = await processAndUpload(image);
+		const url = `https://storage.googleapis.com/${config.gcp.bucket}/${fileName}`;
+		body.imageUrl = url;
+	}
+	return await prisma.bannerAds.update({
+		where: {
+			id: bannerId,
+		},
+		data: { ...body },
 	});
 };
 
@@ -124,4 +154,6 @@ module.exports = {
 	saveAdBanner,
 	getAllBanners,
 	getBannerById,
+	deleteBannerById,
+	updateBanner,
 };

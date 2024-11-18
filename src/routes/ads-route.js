@@ -10,6 +10,7 @@ const router = express.Router();
 router
 	.route('/upload')
 	.post(
+		authAccess,
 		upload.single('image'),
 		validate(adsValidation.uploadBanner),
 		adsController.uploadBanner
@@ -17,6 +18,15 @@ router
 
 router.route('/banners').get(authAccess, adsController.getAllBanners);
 
-router.route('/banners/:bannerId').get(authAccess, adsController.getBannerById);
+router
+	.route('/banners/:bannerId')
+	.get(authAccess, adsController.getBannerById)
+	.delete(authAccess, adsController.deleteBannerById)
+	.patch(
+		authAccess,
+		upload.single('image'),
+		validate(adsValidation.updateBanner),
+		adsController.updateBanner
+	);
 
 module.exports = router;
