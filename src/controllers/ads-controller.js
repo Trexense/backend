@@ -21,6 +21,26 @@ const uploadBanner = catchAsync(async (req, res) => {
 	});
 });
 
+const getAllBanners = catchAsync(async (req, res) => {
+	const result = await adsService.getAllBanners();
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
+const getBannerById = catchAsync(async (req, res) => {
+	const result = await adsService.getBannerById(req.params.bannerId);
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
 module.exports = {
 	uploadBanner,
+	getAllBanners,
+	getBannerById,
 };

@@ -27,10 +27,25 @@ const resizeImage = async (image, width, height) => {
 
 const filterImage = async (image) => {
 	const [result] = await visionClient.safeSearchDetection(image);
-	const safeSearch = result.safeSearchAnnotation;
+	const detections = result.safeSearchAnnotation;
 
-	if (safeSearch.adult >= 4 || safeSearch.violence >= 4) {
-		return false;
+	if (!detections) {
+		return true;
+	}
+
+	const isExplicit =
+		detections.adult === 'LIKELY' ||
+		detections.adult === 'VERY_LIKELY' ||
+		detections.adult === 'POSSIBLE' ||
+		detections.violence === 'LIKELY' ||
+		detections.violence === 'VERY_LIKELY' ||
+		detections.violence === 'POSSIBLE';
+
+	if (isExplicit) {
+		throw new ApiError(
+			httpStatus.status.BAD_REQUEST,
+			'This image contains explicit or violent content'
+		);
 	}
 
 	return true;
@@ -68,6 +83,7 @@ const uploadImage = async (resizedImage) => {
 
 const processAndUpload = async (image) => {
 	try {
+		const resizedImage = await resizeImage(image, 1200, 600);
 		const isSafe = await filterImage(image.buffer);
 		if (!isSafe) {
 			throw new ApiError(
@@ -75,8 +91,6 @@ const processAndUpload = async (image) => {
 				'The image contains negative content'
 			);
 		}
-
-		const resizedImage = await resizeImage(image, 1200, 600);
 		const fileName = await uploadImage(resizedImage);
 		return fileName;
 	} catch (error) {
@@ -93,7 +107,21 @@ const saveAdBanner = async (image, body) => {
 	});
 };
 
+const getAllBanners = async () => {
+	return await prisma.bannerAds.findMany();
+};
+
+const getBannerById = async (bannerId) => {
+	return await prisma.bannerAds.findFirst({
+		where: {
+			id: bannerId,
+		},
+	});
+};
+
 module.exports = {
 	processAndUpload,
 	saveAdBanner,
+	getAllBanners,
+	getBannerById,
 };
