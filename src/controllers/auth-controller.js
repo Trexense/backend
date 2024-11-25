@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const authService = require('../services/auth-service');
 const tokenService = require('../services/token-service');
+const { generateAuthToken } = require('../services/token-service');
 
 const register = catchAsync(async (req, res) => {
 	const result = await authService.register(req.body);
@@ -73,9 +74,25 @@ const verifyEmail = catchAsync(async (req, res) => {
 `);
 });
 
+const refreshToken = catchAsync(async (req, res) => {
+	const { accessToken, refreshToken } = generateAuthToken(
+		req.user?.id,
+		req.user?.name
+	);
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		tokens: {
+			access: accessToken,
+			refresh: refreshToken,
+		},
+	});
+});
+
 module.exports = {
 	register,
 	login,
 	sendEmailVerification,
 	verifyEmail,
+	refreshToken,
 };
