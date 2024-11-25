@@ -2,7 +2,7 @@ const express = require('express');
 const authController = require('../controllers/auth-controller');
 const validate = require('../middlewares/validate');
 const authValidation = require('../validations/auth-validation');
-const { authEmail, authAccess } = require('../middlewares/auth');
+const { authEmail, authAccess, authRefresh } = require('../middlewares/auth');
 
 const router = express.Router();
 
@@ -12,6 +12,9 @@ router
 router
 	.route('/login')
 	.post(validate(authValidation.login), authController.login);
+
+router.route('/token/refresh').get(authRefresh, authController.refreshToken);
+
 router
 	.route('/verification/email/send')
 	.post(authAccess, authController.sendEmailVerification);
@@ -148,10 +151,10 @@ module.exports = router;
  *                   isEmailVerified: false
  *               tokens:
  *                 access:
- *                   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDNlY2JjOC1hZDQ2LTQ2NjgtOWY1MS0xMmJjZWYxNTliYjMiLCJpYXQiOjE3MDY5Njg1NjIsImV4cCI6MTcwNjk3MDM2MiwidHlwZSI6ImFjY2VzcyJ9.5IChaTIjTjTkgRsJ-Ofk_KnXaZJUwKn0Y6rdA3F9vQ4"
+ *                   token: "eyJhbGciO...."
  *                   expires: "2024-02-03T14:26:02.049Z"
  *                 refresh:
- *                   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMDNlY2JjOC1hZDQ2LTQ2NjgtOWY1MS0xMmJjZWYxNTliYjMiLCJpYXQiOjE3MDY5Njg1NjIsImV4cCI6MTcwOTU2MDU2MiwidHlwZSI6InJlZnJlc2gifQ.KNR3tijv7lzkxNTnAbGiR-GatgD9ynsInhFAGwr7V8E"
+ *                   token: "eyJhbGciOi....."
  *                   expires: "2024-03-04T13:56:02.049Z"
  *       '400':
  *         description: Email or Password required
@@ -160,6 +163,51 @@ module.exports = router;
  *             example:
  *               status: 400
  *               message: "\"email\" is required, \"password\" is required"
+ *       '500':
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 500
+ *               message: "Internal server error"
+ */
+
+/**
+ * @swagger
+ * /auth/refresh:
+ *   post:
+ *     summary: Refresh access token
+ *     tags: [Auth]
+ *     description: This endpoint refreshes the access token using a valid refresh token provided in the Authorization header.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Token refreshed successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 200
+ *               message: "Success"
+ *               tokens:
+ *                 access:
+ *                   token: "eyJhbGciOiJI...."
+ *                 refresh:
+ *                   token: "eyJhbGciOiJIUzI1Ni...."
+ *       '400':
+ *         description: Invalid or expired refresh token
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 400
+ *               message: "Invalid or expired refresh token"
+ *       '401':
+ *         description: Unauthorized (Missing or invalid token)
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 401
+ *               message: "Unauthorized"
  *       '500':
  *         description: Internal Server Error
  *         content:
