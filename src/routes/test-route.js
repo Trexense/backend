@@ -13,19 +13,4 @@ router.route('/admin').get(authAdmin, (req, res) => {
 	res.status(httpStatus.status.OK).send('Success');
 });
 
-router.route('/refresh').get(authRefresh, (req, res) => {
-	const { accessToken, refreshToken } = generateAuthToken(
-		req.user?.id,
-		req.user?.name
-	);
-	res.status(httpStatus.status.OK).send({
-		status: httpStatus.status.OK,
-		message: 'Success',
-		tokens: {
-			access: accessToken,
-			refresh: refreshToken,
-		},
-	});
-});
-
 module.exports = router;
