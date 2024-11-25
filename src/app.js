@@ -46,9 +46,8 @@ app.get('/', (req, res) => {
 
 app.listen(config.port, () => {
 	console.log(`Server running on port ${config.port}`);
-	console.log(`Swagger docs: http://localhost:${config.port}/api-docs`);
 });
 
-app.use(router); //1. awalan masuk sini udah pasti ofkors banget, lanjut ke routes/index.js
+app.use(router);
 
 app.use(errorHandler);
