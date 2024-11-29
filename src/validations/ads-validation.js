@@ -24,7 +24,15 @@ const updateBanner = {
 	}),
 };
 
+const getAllBanner = {
+	query: Joi.object().keys({
+		page: Joi.number().required(),
+		limit: Joi.number().required(),
+	}),
+};
+
 module.exports = {
 	uploadBanner,
 	updateBanner,
+	getAllBanner,
 };

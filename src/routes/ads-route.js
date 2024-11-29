@@ -16,7 +16,13 @@ router
 		adsController.uploadBanner
 	);
 
-router.route('/banners').get(authAccess, adsController.getAllBanners);
+router
+	.route('/banners')
+	.get(
+		authAccess,
+		validate(adsValidation.getAllBanner),
+		adsController.getAllBanners
+	);
 
 router
 	.route('/banners/:bannerId')

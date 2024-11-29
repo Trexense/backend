@@ -22,11 +22,20 @@ const uploadBanner = catchAsync(async (req, res) => {
 });
 
 const getAllBanners = catchAsync(async (req, res) => {
-	const result = await adsService.getAllBanners();
+	const { totalCount, bannerData } = await adsService.getAllBanners(
+		req.query.page,
+		req.query.limit
+	);
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
 		message: 'Success',
-		data: result,
+		data: bannerData,
+		pagination: {
+			totalItems: Number(totalCount),
+			totalPage: Math.ceil(Number(totalCount / req.query.limit)),
+			currentPage: Number(req.query.page),
+			pageSize: Number(req.query.limit),
+		},
 	});
 });
 

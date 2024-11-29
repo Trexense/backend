@@ -107,8 +107,19 @@ const saveAdBanner = async (image, body) => {
 	});
 };
 
-const getAllBanners = async () => {
-	return await prisma.bannerAds.findMany();
+const getAllBanners = async (page, pageSize) => {
+	const [totalCount, bannerData] = await Promise.all([
+		prisma.bannerAds.count(),
+		prisma.bannerAds.findMany({
+			skip: (page - 1) * pageSize,
+			take: Number(pageSize),
+		}),
+	]);
+
+	return {
+		totalCount,
+		bannerData,
+	};
 };
 
 const getBannerById = async (bannerId) => {
