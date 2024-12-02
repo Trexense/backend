@@ -35,6 +35,7 @@
     startDate         String
     targetUrl         String
     bannerDuration    Int 
+    validUntil        DateTime
     isActive          Boolean      @default(false)
     isPaid            Boolean      @default(false)
     createdAt         DateTime     @default(now())

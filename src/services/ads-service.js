@@ -52,33 +52,37 @@ const filterImage = async (image) => {
 };
 
 const uploadImage = async (resizedImage) => {
-	const shortUuid = uuidv4().split('-')[0];
-	const uniqueFileName = `${Date.now()}-${shortUuid}.png`;
-	const customMetadata = {
-		contenType: 'image/*',
-		metadata: {
-			type: 'banner-image',
-		},
-	};
+	try {
+		const shortUuid = uuidv4().split('-')[0];
+		const uniqueFileName = `${Date.now()}-${shortUuid}.png`;
+		const customMetadata = {
+			contenType: 'image/*',
+			metadata: {
+				type: 'banner-image',
+			},
+		};
 
-	const bucket = storage.bucket(config.gcp.bucket);
-	const file = bucket.file(uniqueFileName);
+		const bucket = storage.bucket(config.gcp.bucket);
+		const file = bucket.file(uniqueFileName);
 
-	const stream = file.createWriteStream({
-		resumable: false,
-		metadata: customMetadata,
-	});
+		const stream = file.createWriteStream({
+			resumable: false,
+			metadata: customMetadata,
+		});
 
-	stream.end(resizedImage);
-	stream.on('finish', () => {
-		console.log(`File uploaded successfully as ${uniqueFileName}`);
-	});
+		stream.end(resizedImage);
+		stream.on('finish', () => {
+			console.log(`File uploaded successfully as ${uniqueFileName}`);
+		});
 
-	stream.on('error', (err) => {
-		console.error(`Failed to upload file: ${err.message}`);
-	});
-	console.log(uniqueFileName);
-	return uniqueFileName;
+		stream.on('error', (err) => {
+			console.error(`Failed to upload file: ${err.message}`);
+		});
+		console.log(uniqueFileName);
+		return uniqueFileName;
+	} catch (error) {
+		throw new ApiError(httpStatus.status.INTERNAL_SERVER_ERROR, error.message);
+	}
 };
 
 const processAndUpload = async (image) => {
@@ -102,12 +106,22 @@ const saveAdBanner = async (image, body) => {
 	const fileName = await processAndUpload(image);
 	const url = `https://storage.googleapis.com/${config.gcp.bucket}/${fileName}`;
 	body.bannerDuration = Number(body.bannerDuration);
+	const endDate = new Date();
+	endDate.setDate(endDate.getDate() + Number(body.bannerDuration));
 	return await prisma.bannerAds.create({
-		data: { imageUrl: url, ...body },
+		data: { validUntil: endDate, imageUrl: url, ...body },
 	});
 };
 
 const getAllBanners = async (page, pageSize) => {
+	const now = new Date();
+	await prisma.bannerAds.deleteMany({
+		where: {
+			validUntil: {
+				lt: now,
+			},
+		},
+	});
 	const [totalCount, bannerData] = await Promise.all([
 		prisma.bannerAds.count(),
 		prisma.bannerAds.findMany({
