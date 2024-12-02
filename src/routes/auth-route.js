@@ -175,7 +175,7 @@ module.exports = router;
 /**
  * @swagger
  * /auth/refresh:
- *   post:
+ *   get:
  *     summary: Refresh access token
  *     tags: [Auth]
  *     description: This endpoint refreshes the access token using a valid refresh token provided in the Authorization header.
