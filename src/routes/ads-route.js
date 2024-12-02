@@ -62,6 +62,12 @@ module.exports = router;
  *                 type: string
  *               description:
  *                 type: string
+ *               startDate:
+ *                 type: string
+ *               targetUrl:
+ *                 type: string
+ *               bannerDuration:
+ *                 type: number
  *     responses:
  *       201:
  *         description: Banner uploaded successfully
@@ -95,6 +101,9 @@ module.exports = router;
  *                       type: string
  *                     bannerDuration:
  *                       type: integer
+ *                     validUntil:
+ *                       type: string
+ *                       format: date-time
  *                     isActive:
  *                       type: boolean
  *                     isPaid:
@@ -158,6 +167,9 @@ module.exports = router;
  *                       type: string
  *                     bannerDuration:
  *                       type: integer
+ *                     validUntil:
+ *                       type: string
+ *                       format: date-time
  *                     isActive:
  *                       type: boolean
  *                     isPaid:
@@ -227,6 +239,12 @@ module.exports = router;
  *                 type: string
  *               description:
  *                 type: string
+ *               startDate:
+ *                 type: string
+ *               targetUrl:
+ *                 type: string
+ *               bannerDuration:
+ *                 type: number
  *     responses:
  *       200:
  *         description: Banner updated successfully
