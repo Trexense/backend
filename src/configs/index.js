@@ -31,4 +31,7 @@ module.exports = {
 		credential: process.env.CREDENTIAL,
 		bucket: process.env.BUCKET_NAME,
 	},
+	here_api: {
+		apiKey: process.env.HERE_API_KEY,
+	},
 };
