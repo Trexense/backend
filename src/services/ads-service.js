@@ -77,7 +77,7 @@ const uploadImage = async (resizedImage) => {
 	stream.on('error', (err) => {
 		console.error(`Failed to upload file: ${err.message}`);
 	});
-
+	console.log(uniqueFileName);
 	return uniqueFileName;
 };
 
