@@ -4,6 +4,7 @@ const testRouter = require('./test-route');
 const adsRouter = require('./ads-route');
 const userRouter = require('../routes/user-route');
 const hotelRouter = require('../routes/hotel-route');
+const planRouter = require('./plan-route');
 
 const router = express.Router();
 
@@ -27,6 +28,10 @@ const defaultRoutes = [
 	{
 		path: '/hotels',
 		route: hotelRouter,
+	},
+	{
+		path: '/plans',
+		route: planRouter,
 	},
 ];
 
