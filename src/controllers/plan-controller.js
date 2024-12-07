@@ -72,6 +72,26 @@ const deleteActivity = catchAsync(async (req, res) => {
 	});
 });
 
+const addHotelToPlan = catchAsync(async (req, res) => {
+	const result = await planService.addHotelToPlan(req.params.dayId, req.body);
+
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
+const deleteHotelFromPlan = catchAsync(async (req, res) => {
+	const result = await planService.deleteHotelFromPlan(req.params.hotelPlanId);
+
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
 module.exports = {
 	createPlan,
 	getPlan,
@@ -80,4 +100,6 @@ module.exports = {
 	addActivity,
 	getPlanDetail,
 	deleteActivity,
+	addHotelToPlan,
+	deleteHotelFromPlan,
 };

@@ -7,6 +7,7 @@
     DATABASE_URL=""
     PORT=8080
     JWT_SECRET=""
+    HERE_API_SECRET=""
     EMAIL=""
     PASSWORD=""
     BUCKET_NAME=""

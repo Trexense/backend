@@ -52,23 +52,23 @@ model Hotel {
   laundry         Int
   hotelDetails    HotelDetail[]
   clicks          UserHotelClick[]
-  bookmarks       UserHotelBookmark[]  // Relasi ke UserHotelBookmark
+  bookmarks       UserHotelBookmark[]  
 }
 
 model UserHotelClick {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) 
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  hotelId   String
+  hotelId   String    @unique
   hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   clickedAt DateTime @default(now())
 }
 
 model UserHotelBookmark {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) 
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  hotelId   String
+  hotelId   String    @unique
   hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   bookmarkedAt DateTime @default(now())
 }
@@ -80,6 +80,7 @@ model HotelDetail {
   imageUrl      String
   name          String
   address       String
+  cost          Float
   hotelPlan     HotelPlan[]
 }
 
@@ -118,6 +119,7 @@ model HotelPlan {
 model Activity {
   id            String      @id @default(uuid())
   name          String
+  description   String
   location      String
   cost          Float
   createdAt     DateTime     @default(now())
@@ -134,6 +136,8 @@ model BannerAds {
   title             String
   description       String
   startDate         String
+  location          String
+  cost              Float
   targetUrl         String
   bannerDuration    Int 
   validUntil        DateTime

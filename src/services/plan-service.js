@@ -35,7 +35,11 @@ const createPlan = async (body, userId) => {
 };
 
 const getPlan = async (userId) => {
-	return await prisma.plan.findMany();
+	return await prisma.plan.findMany({
+		where: {
+			userId: userId,
+		},
+	});
 };
 
 const getPlanById = async (planId) => {
@@ -116,6 +120,33 @@ const deleteActivity = async (activityId) => {
 	});
 };
 
+const addHotelToPlan = async (dayId, body) => {
+	return await prisma.hotelPlan.create({
+		data: {
+			planDetailId: dayId,
+			...body,
+		},
+	});
+};
+
+const deleteHotelFromPlan = async (hotelPlanId) => {
+	const hotelPlan = await prisma.hotelPlan.findFirst({
+		where: {
+			id: hotelPlanId,
+		},
+	});
+
+	if (!hotelPlan) {
+		throw new ApiError(httpStatus.status.NOT_FOUND, 'Hotel not found');
+	}
+
+	return await prisma.hotelPlan.delete({
+		where: {
+			id: hotelPlanId,
+		},
+	});
+};
+
 module.exports = {
 	createPlan,
 	getPlan,
@@ -124,4 +155,6 @@ module.exports = {
 	addActivity,
 	getPlanDetail,
 	deleteActivity,
+	addHotelToPlan,
+	deleteHotelFromPlan,
 };
