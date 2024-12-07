@@ -50,6 +50,7 @@ model Hotel {
   aesthetic       Int
   disability      Int
   laundry         Int
+  wifi            Int
   hotelDetails    HotelDetail[]
   clicks          UserHotelClick[]
   bookmarks       UserHotelBookmark[]  
