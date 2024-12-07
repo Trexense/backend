@@ -7,30 +7,34 @@ const prisma = require('../../prisma');
 const ApiError = require('../utils/apiError');
 
 const nearbyHotel = async (streetName) => {
-	const addressFormat = encodeAddress(streetName);
-	const addressCoordinate = await axios.get(
-		`https://geocode.search.hereapi.com/v1/geocode?q=${addressFormat}&apiKey=${hereApiKey}`
-	);
+	try {
+		const addressFormat = encodeAddress(streetName);
+		const addressCoordinate = await axios.get(
+			`https://geocode.search.hereapi.com/v1/geocode?q=${addressFormat}&apiKey=${hereApiKey}`
+		);
 
-	const { lat, lng } = addressCoordinate.data.items[0].position;
-	const nearbyHotelRequest = await axios.get(
-		`https://discover.search.hereapi.com/v1/discover?at=${lat},${lng}&radius=20&q=hotel&apiKey=${hereApiKey}`
-	);
+		const { lat, lng } = addressCoordinate.data.items[0].position;
+		const nearbyHotelRequest = await axios.get(
+			`https://discover.search.hereapi.com/v1/discover?at=${lat},${lng}&radius=20&q=hotel&apiKey=${hereApiKey}`
+		);
 
-	let filterHotel = nearbyHotelRequest.data.items.filter((item) => {
-		return item.title.toLowerCase().includes('hotel');
-	});
-
-	if (filterHotel.length < 1) {
-		filterHotel = nearbyHotelRequest.data.items.filter((item) => {
-			return (
-				item.categories.length === 1 &&
-				item.categories[0].id === '500-5000-0053'
-			);
+		let filterHotel = nearbyHotelRequest.data.items.filter((item) => {
+			return item.title.toLowerCase().includes('hotel');
 		});
-	}
 
-	return filterHotel;
+		if (filterHotel.length < 1) {
+			filterHotel = nearbyHotelRequest.data.items.filter((item) => {
+				return (
+					item.categories.length === 1 &&
+					item.categories[0].id === '500-5000-0053'
+				);
+			});
+		}
+
+		return filterHotel;
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 const getHotel = async (hotelId) => {
