@@ -20,8 +20,16 @@ router
 	.post(authAccess, planController.addActivity);
 
 router
-	.route('/detail/:dayId/activity/:activityId')
+	.route('/detail/:dayId/hotel')
+	.post(authAccess, planController.addHotelToPlan);
+
+router
+	.route('/activity/:activityId')
 	.delete(authAccess, planController.deleteActivity);
+
+router
+	.route('/hotel/:hotelPlanId')
+	.delete(authAccess, planController.deleteHotelFromPlan);
 
 router.route('/create').post(authAccess, planController.createPlan);
 
