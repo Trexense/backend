@@ -49,7 +49,7 @@ module.exports = router;
  *     summary: Get all hotels
  *     tags: [Hotels]
  *     security:
- *       - bearerAuth: []  // Requires Bearer token
+ *       - bearerAuth: []
  *     responses:
  *       '200':
  *         description: List of all hotels
