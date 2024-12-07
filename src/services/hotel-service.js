@@ -125,7 +125,7 @@ const getBookmark = async (userId) => {
 };
 
 const getAllHotel = async () => {
-	return await prisma.hotelDetail.findMany({});
+	return await prisma.hotel.findMany({});
 };
 
 module.exports = {
