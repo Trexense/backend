@@ -94,10 +94,33 @@ const resetPassword = async (userId, newPassword) => {
 	});
 };
 
+const userActivity = async (userId) => {
+	return await prisma.user.findFirst({
+		where: {
+			id: userId,
+		},
+		select: {
+			id: true,
+			name: true,
+			clicks: {
+				select: {
+					hotelId: true,
+				},
+			},
+			bookmarks: {
+				select: {
+					hotelId: true,
+				},
+			},
+		},
+	});
+};
+
 module.exports = {
 	getUserById,
 	updateUser,
 	deleteUser,
 	requestResetPassword,
 	resetPassword,
+	userActivity,
 };

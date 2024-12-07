@@ -11,6 +11,8 @@ const validate = require('../middlewares/validate');
 
 const router = express.Router();
 
+router.route('/activity').get(authAccess, userController.userActivity);
+
 router
 	.route('/:userId')
 	.get(authAccess, validate(getUserById), userController.getUser)

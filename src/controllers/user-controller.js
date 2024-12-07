@@ -29,6 +29,15 @@ const deleteUser = catchAsync(async (req, res) => {
 	});
 });
 
+const userActivity = catchAsync(async (req, res) => {
+	const result = await userService.userActivity(req.user.id);
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
 const requestResetPassword = catchAsync(async (req, res) => {
 	await userService.requestResetPassword(req.params.userId, req.body.password);
 	res.status(httpStatus.status.OK).send({
@@ -78,4 +87,5 @@ module.exports = {
 	deleteUser,
 	requestResetPassword,
 	resetPassword,
+	userActivity,
 };
