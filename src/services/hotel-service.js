@@ -1,7 +1,10 @@
 const axios = require('axios');
 const config = require('../configs/index');
+const httpStatus = require('http-status');
 const hereApiKey = config.here_api.apiKey;
 const { encodeAddress } = require('../utils/coordinate');
+const prisma = require('../../prisma');
+const ApiError = require('../utils/apiError');
 
 const nearbyHotel = async (streetName) => {
 	const addressFormat = encodeAddress(streetName);
@@ -30,6 +33,71 @@ const nearbyHotel = async (streetName) => {
 	return filterHotel;
 };
 
+const getHotel = async (hotelId) => {
+	const hotel = await prisma.hotel.findFirst({
+		where: {
+			id: hotelId,
+		},
+	});
+
+	if (!hotel) {
+		throw new ApiError(httpStatus.status.NOT_FOUND, 'Hotel not found');
+	}
+
+	return hotel;
+};
+
+const addClick = async (userId, hotelId) => {
+	try {
+		await getHotel(hotelId);
+		return await prisma.userHotelClick.create({
+			data: {
+				userId: userId,
+				hotelId: hotelId,
+			},
+		});
+	} catch (error) {
+		if (error instanceof ApiError) {
+			throw error;
+		}
+		if (error.code === 'P2002') {
+			return {
+				message:
+					'Data already exists. This user has already bookmarked this hotel.',
+			};
+		}
+		throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
+	}
+};
+
+const addBookmark = async (userId, hotelId) => {
+	try {
+		const hotel = await getHotel(hotelId);
+		if (!hotel) {
+			throw new ApiError(httpStatus.status.NOT_FOUND, 'Hotel not found');
+		}
+		return await prisma.userHotelBookmark.create({
+			data: {
+				userId: userId,
+				hotelId: hotelId,
+			},
+		});
+	} catch (error) {
+		if (error instanceof ApiError) {
+			throw error;
+		}
+		if (error.code === 'P2002') {
+			return {
+				message:
+					'Data already exists. This user has already bookmarked this hotel.',
+			};
+		}
+		throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
+	}
+};
+
 module.exports = {
 	nearbyHotel,
+	addClick,
+	addBookmark,
 };

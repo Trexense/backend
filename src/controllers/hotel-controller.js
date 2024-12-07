@@ -12,6 +12,31 @@ const nearbyHotel = catchAsync(async (req, res) => {
 	});
 });
 
+const addClick = catchAsync(async (req, res) => {
+	const result = await hotelService.addClick(req.user.id, req.params.hotelId);
+
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
+const addBookmark = catchAsync(async (req, res) => {
+	const result = await hotelService.addBookmark(
+		req.user.id,
+		req.params.hotelId
+	);
+
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
 module.exports = {
 	nearbyHotel,
+	addClick,
+	addBookmark,
 };

@@ -56,19 +56,19 @@ model Hotel {
 }
 
 model UserHotelClick {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) 
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  hotelId   String
+  hotelId   String    @unique
   hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   clickedAt DateTime @default(now())
 }
 
 model UserHotelBookmark {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) 
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  hotelId   String
+  hotelId   String    @unique
   hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
   bookmarkedAt DateTime @default(now())
 }

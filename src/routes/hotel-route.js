@@ -15,4 +15,10 @@ router
 		hotelController.nearbyHotel
 	);
 
+router.route('/:hotelId/clicks').post(authAccess, hotelController.addClick);
+
+router
+	.route('/:hotelId/bookmarks')
+	.post(authAccess, hotelController.addBookmark);
+
 module.exports = router;
