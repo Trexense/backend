@@ -35,7 +35,11 @@ const createPlan = async (body, userId) => {
 };
 
 const getPlan = async (userId) => {
-	return await prisma.plan.findMany();
+	return await prisma.plan.findMany({
+		where: {
+			userId: userId,
+		},
+	});
 };
 
 const getPlanById = async (planId) => {

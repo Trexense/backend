@@ -7,6 +7,8 @@ const { authAccess } = require('../middlewares/auth');
 
 const router = express.Router();
 
+router.route('/').get(hotelController.getAllHotel);
+
 router
 	.route('/nearby')
 	.get(
@@ -19,6 +21,10 @@ router.route('/:hotelId/clicks').post(authAccess, hotelController.addClick);
 
 router
 	.route('/:hotelId/bookmarks')
-	.post(authAccess, hotelController.addBookmark);
+	.post(authAccess, hotelController.addBookmark)
+	.delete(authAccess, hotelController.deleteBookmark);
+
+router.route('/clicks').get(authAccess, hotelController.getClick);
+router.route('/bookmarks').get(authAccess, hotelController.getBookmark);
 
 module.exports = router;

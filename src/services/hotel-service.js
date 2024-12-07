@@ -96,8 +96,40 @@ const addBookmark = async (userId, hotelId) => {
 	}
 };
 
+const deleteBookmark = async (hotelId) => {
+	return await prisma.userHotelBookmark.delete({
+		where: {
+			hotelId: hotelId,
+		},
+	});
+};
+
+const getClick = async (userId) => {
+	return await prisma.userHotelClick.findMany({
+		where: {
+			userId: userId,
+		},
+	});
+};
+
+const getBookmark = async (userId) => {
+	return await prisma.userHotelBookmark.findMany({
+		where: {
+			userId: userId,
+		},
+	});
+};
+
+const getAllHotel = async () => {
+	return await prisma.hotelDetail.findMany({});
+};
+
 module.exports = {
 	nearbyHotel,
 	addClick,
 	addBookmark,
+	deleteBookmark,
+	getClick,
+	getBookmark,
+	getAllHotel,
 };
