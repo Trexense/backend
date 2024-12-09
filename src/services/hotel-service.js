@@ -38,7 +38,7 @@ const nearbyHotel = async (streetName) => {
 };
 
 const getHotel = async (hotelId) => {
-	const hotel = await prisma.hotel.findFirst({
+	const hotel = await prisma.hotelDetail.findFirst({
 		where: {
 			id: hotelId,
 		},
@@ -126,7 +126,7 @@ const getBookmark = async (userId) => {
 };
 
 const getAllHotel = async () => {
-	return await prisma.hotel.findMany({});
+	return await prisma.hotelDetail.findMany({});
 };
 
 const recommendation = async (userId) => {
@@ -158,4 +158,5 @@ module.exports = {
 	getBookmark,
 	getAllHotel,
 	recommendation,
+	getHotel,
 };
