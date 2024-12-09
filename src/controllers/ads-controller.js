@@ -75,10 +75,20 @@ const updateBanner = catchAsync(async (req, res) => {
 	});
 });
 
+const changeBannerPaidStatus = catchAsync(async (req, res) => {
+	const result = await adsService.changeBannerPaidStatus(req.params.bannerId);
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
 module.exports = {
 	uploadBanner,
 	getAllBanners,
 	getBannerById,
 	deleteBannerById,
 	updateBanner,
+	changeBannerPaidStatus,
 };

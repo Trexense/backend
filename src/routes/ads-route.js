@@ -4,6 +4,7 @@ const upload = require('../utils/multer');
 const validate = require('../middlewares/validate');
 const adsValidation = require('../validations/ads-validation');
 const { authAccess } = require('../middlewares/auth');
+const { route } = require('./auth-route');
 
 const router = express.Router();
 
@@ -34,6 +35,10 @@ router
 		validate(adsValidation.updateBanner),
 		adsController.updateBanner
 	);
+
+router
+	.route('/banners/:bannerId/paid')
+	.post(authAccess, adsController.changeBannerPaidStatus);
 
 module.exports = router;
 
@@ -356,4 +361,56 @@ module.exports = router;
  *                       type: integer
  *       401:
  *         description: Unauthorized
+ */
+
+/**
+ * @swagger
+ * /ads/banner/{bannerId}/paid:
+ *   patch:
+ *     summary: Change banner paid status
+ *     tags: [Advertisements]
+ *     security:
+ *       - bearerAuth: []
+ *     consumes:
+ *       - multipart/form-data
+ *     parameters:
+ *       - in: path
+ *         name: bannerId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the banner to update
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *                 description: Only JPG or PNG files are allowed
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               startDate:
+ *                 type: string
+ *               targetUrl:
+ *                 type: string
+ *               bannerDuration:
+ *                 type: number
+ *               cost:
+ *                 type: float
+ *               location:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Banner updated successfully
+ *       404:
+ *         description: Banner not found
+ *       401:
+ *         description: Unauthorized
+ *       400:
+ *         description: Bad request
  */

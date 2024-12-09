@@ -175,6 +175,17 @@ const updateBanner = async (bannerId, body, image) => {
 	});
 };
 
+const changeBannerPaidStatus = async (bannerId) => {
+	return await prisma.bannerAds.update({
+		where: {
+			id: bannerId,
+		},
+		data: {
+			isPaid: true,
+		},
+	});
+};
+
 module.exports = {
 	processAndUpload,
 	saveAdBanner,
@@ -182,4 +193,5 @@ module.exports = {
 	getBannerById,
 	deleteBannerById,
 	updateBanner,
+	changeBannerPaidStatus,
 };
