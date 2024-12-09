@@ -1,5 +1,16 @@
--- DropForeignKey
-ALTER TABLE "BannerAds" DROP CONSTRAINT "BannerAds_userId_fkey";
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT,
+    "password" TEXT NOT NULL,
+    "role" TEXT NOT NULL DEFAULT 'user',
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "isEmailVerified" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Hotel" (
@@ -24,6 +35,7 @@ CREATE TABLE "Hotel" (
     "aesthetic" INTEGER NOT NULL,
     "disability" INTEGER NOT NULL,
     "laundry" INTEGER NOT NULL,
+    "wifi" INTEGER NOT NULL,
 
     CONSTRAINT "Hotel_pkey" PRIMARY KEY ("id")
 );
@@ -55,6 +67,7 @@ CREATE TABLE "HotelDetail" (
     "imageUrl" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "address" TEXT NOT NULL,
+    "cost" DOUBLE PRECISION NOT NULL,
 
     CONSTRAINT "HotelDetail_pkey" PRIMARY KEY ("id")
 );
@@ -97,6 +110,7 @@ CREATE TABLE "HotelPlan" (
 CREATE TABLE "Activity" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "location" TEXT NOT NULL,
     "cost" DOUBLE PRECISION NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -105,6 +119,36 @@ CREATE TABLE "Activity" (
 
     CONSTRAINT "Activity_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateTable
+CREATE TABLE "BannerAds" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "startDate" TEXT NOT NULL,
+    "location" TEXT NOT NULL,
+    "cost" DOUBLE PRECISION NOT NULL,
+    "targetUrl" TEXT NOT NULL,
+    "bannerDuration" INTEGER NOT NULL,
+    "validUntil" TIMESTAMP(3) NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT false,
+    "isPaid" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "BannerAds_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserHotelClick_userId_hotelId_key" ON "UserHotelClick"("userId", "hotelId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserHotelBookmark_userId_hotelId_key" ON "UserHotelBookmark"("userId", "hotelId");
 
 -- AddForeignKey
 ALTER TABLE "UserHotelClick" ADD CONSTRAINT "UserHotelClick_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

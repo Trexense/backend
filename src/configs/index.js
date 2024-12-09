@@ -34,4 +34,7 @@ module.exports = {
 	here_api: {
 		apiKey: process.env.HERE_API_KEY,
 	},
+	machine_learning: {
+		baseUrl: process.env.ML_API_URL,
+	},
 };

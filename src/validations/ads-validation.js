@@ -3,12 +3,13 @@ const { objectId } = require('./custom-validation');
 
 const uploadBanner = {
 	body: Joi.object().keys({
-		userId: Joi.string().required().custom(objectId),
 		title: Joi.string().required(),
 		description: Joi.string().required(),
 		startDate: Joi.string().required(),
 		targetUrl: Joi.string().required(),
 		bannerDuration: Joi.any().required(),
+		cost: Joi.any().required(),
+		location: Joi.string().required(),
 	}),
 };
 

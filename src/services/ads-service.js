@@ -102,14 +102,15 @@ const processAndUpload = async (image) => {
 	}
 };
 
-const saveAdBanner = async (image, body) => {
+const saveAdBanner = async (image, body, userId) => {
 	const fileName = await processAndUpload(image);
 	const url = `https://storage.googleapis.com/${config.gcp.bucket}/${fileName}`;
 	body.bannerDuration = Number(body.bannerDuration);
 	const endDate = new Date();
 	endDate.setDate(endDate.getDate() + Number(body.bannerDuration));
+	body.cost = parseFloat(body.cost);
 	return await prisma.bannerAds.create({
-		data: { validUntil: endDate, imageUrl: url, ...body },
+		data: { userId: userId, validUntil: endDate, imageUrl: url, ...body },
 	});
 };
 

@@ -55,8 +55,7 @@ module.exports = router;
  *             type: object
  *             properties:
  *               image:
- *                 type: string
- *                 format: binary
+ *                 type: file
  *                 description: Only JPG or PNG files are allowed
  *               title:
  *                 type: string
@@ -68,6 +67,10 @@ module.exports = router;
  *                 type: string
  *               bannerDuration:
  *                 type: number
+ *               cost:
+ *                 type: float
+ *               location:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Banner uploaded successfully
@@ -101,6 +104,10 @@ module.exports = router;
  *                       type: string
  *                     bannerDuration:
  *                       type: integer
+ *                     cost:
+ *                       type: float
+ *                     location:
+ *                       type: string
  *                     validUntil:
  *                       type: string
  *                       format: date-time
@@ -162,6 +169,10 @@ module.exports = router;
  *                     description:
  *                       type: string
  *                     startDate:
+ *                       type: string
+ *                     cost:
+ *                       type: float
+ *                     location:
  *                       type: string
  *                     targetUrl:
  *                       type: string
@@ -245,6 +256,10 @@ module.exports = router;
  *                 type: string
  *               bannerDuration:
  *                 type: number
+ *               cost:
+ *                 type: float
+ *               location:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Banner updated successfully
@@ -310,10 +325,18 @@ module.exports = router;
  *                         type: string
  *                       bannerDuration:
  *                         type: integer
+ *                       cost:
+ *                         type: float
+ *                       location:
+ *                         type: string
  *                       isActive:
  *                         type: boolean
  *                       isPaid:
  *                         type: boolean
+ *                     cost:
+ *                       type: float
+ *                     location:
+ *                       type: string
  *                       createdAt:
  *                         type: string
  *                         format: date-time

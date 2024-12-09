@@ -13,7 +13,7 @@ const uploadBanner = catchAsync(async (req, res) => {
 	}
 	const body = Object.assign({}, req.body);
 
-	const result = await adsService.saveAdBanner(image, body);
+	const result = await adsService.saveAdBanner(image, body, req.user.id);
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
 		message: 'Success',
