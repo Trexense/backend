@@ -40,6 +40,7 @@ router
 
 router.route('/clicks').get(authAccess, hotelController.getClick);
 router.route('/bookmarks').get(authAccess, hotelController.getBookmark);
+router.route('/:hotelId').get(hotelController.getHotel);
 
 module.exports = router;
 

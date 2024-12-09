@@ -85,6 +85,16 @@ const recommendation = catchAsync(async (req, res) => {
 	});
 });
 
+const getHotel = catchAsync(async(req,res)=>{
+	const result = await hotelService.getHotel(req.params.hotelId);
+
+		res.status(httpStatus.status.OK).send({
+			status: httpStatus.status.OK,
+			message:'Success',
+			data:result
+		});
+});
+
 module.exports = {
 	nearbyHotel,
 	addClick,
@@ -94,4 +104,5 @@ module.exports = {
 	deleteBookmark,
 	getAllHotel,
 	recommendation,
+	getHotel
 };
