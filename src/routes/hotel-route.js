@@ -212,3 +212,36 @@ module.exports = router;
  *                   hotelId: "650e8400-e29b-41d4-a716-446655440000"
  *                   bookmarkedAt: "2024-12-07T07:24:48.798Z"
  */
+
+/**
+ * @swagger
+ * /hotels/recommendation:
+ *   get:
+ *     summary: Get Hotel Recommendation
+ *     tags: [Hotels]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: List of Hotel Recommendation
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 200
+ *               message: "Success"
+ *               data:
+ *                 - id: "05ab3029-29cb-432b-a530-ac8d3d07b0cf"
+ *                   hotelId: "550e8400-e29b-41d4-a716-446655440000"
+ *                   imageUrl: "https://example.com/new-image.jpg"
+ *                   name: "New Hotel Detail Example"
+ *                   address: "456 New Example Avenue, Example City"
+ *                   cost: 150
+ *                   description: string
+ *                 - id: "6590d41a-f083-4fd9-8183-f4a1cfac5ad3"
+ *                   hotelId: "650e8400-e29b-41d4-a716-446655440000"
+ *                   imageUrl: "https://example.com/new-image.jpg"
+ *                   name: "New Hotel Detail Example"
+ *                   address: "456 New Example Avenue, Example City"
+ *                   cost: 150
+ *                   description: string
+ */

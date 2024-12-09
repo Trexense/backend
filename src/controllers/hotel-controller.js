@@ -76,9 +76,7 @@ const getAllHotel = catchAsync(async (req, res) => {
 });
 
 const recommendation = catchAsync(async (req, res) => {
-	const result = await hotelService.recommendation(
-		'de697edd-38ac-4afa-a0a0-9f45c3d19144'
-	);
+	const result = await hotelService.recommendation(req.user.id);
 
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,

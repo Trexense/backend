@@ -1,6 +1,8 @@
 const ApiError = require('../utils/apiError');
 const prisma = require('../../prisma/index');
 const httpStatus = require('http-status');
+const axios = require('axios');
+const config = require('../configs/index');
 
 const createPlan = async (body, userId) => {
 	try {
@@ -147,6 +149,16 @@ const deleteHotelFromPlan = async (hotelPlanId) => {
 	});
 };
 
+const generateItinerary = async (prompt) => {
+	const result = await axios.post(
+		`${config.machine_learning.baseUrl}/generate`,
+		{
+			prompt: prompt,
+		}
+	);
+	return result.data;
+};
+
 module.exports = {
 	createPlan,
 	getPlan,
@@ -157,4 +169,5 @@ module.exports = {
 	deleteActivity,
 	addHotelToPlan,
 	deleteHotelFromPlan,
+	generateItinerary,
 };
