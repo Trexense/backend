@@ -27,8 +27,9 @@ const updateBanner = {
 
 const getAllBanner = {
 	query: Joi.object().keys({
-		page: Joi.number().required(),
-		limit: Joi.number().required(),
+		page: Joi.number().optional(),
+		limit: Joi.number().optional(),
+		isPaid: Joi.boolean().optional(),
 	}),
 };
 

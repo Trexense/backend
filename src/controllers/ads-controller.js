@@ -24,7 +24,8 @@ const uploadBanner = catchAsync(async (req, res) => {
 const getAllBanners = catchAsync(async (req, res) => {
 	const { totalCount, bannerData } = await adsService.getAllBanners(
 		req.query.page,
-		req.query.limit
+		req.query.limit,
+		req.query.isPaid
 	);
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
