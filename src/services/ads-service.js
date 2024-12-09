@@ -114,7 +114,7 @@ const saveAdBanner = async (image, body, userId) => {
 	});
 };
 
-const getAllBanners = async (page, pageSize) => {
+const getAllBanners = async (page = 1, pageSize = 4, isPaid = false) => {
 	const now = new Date();
 	await prisma.bannerAds.deleteMany({
 		where: {
@@ -123,18 +123,35 @@ const getAllBanners = async (page, pageSize) => {
 			},
 		},
 	});
-	const [totalCount, bannerData] = await Promise.all([
-		prisma.bannerAds.count(),
-		prisma.bannerAds.findMany({
-			skip: (page - 1) * pageSize,
-			take: Number(pageSize),
-		}),
-	]);
 
-	return {
-		totalCount,
-		bannerData,
-	};
+	if (isPaid) {
+		const [totalCount, bannerData] = await Promise.all([
+			prisma.bannerAds.count(),
+			prisma.bannerAds.findMany({
+				where: {
+					isPaid: true,
+				},
+				skip: (page - 1) * pageSize,
+				take: Number(pageSize),
+			}),
+		]);
+		return {
+			totalCount,
+			bannerData,
+		};
+	} else {
+		const [totalCount, bannerData] = await Promise.all([
+			prisma.bannerAds.count(),
+			prisma.bannerAds.findMany({
+				skip: (page - 1) * pageSize,
+				take: Number(pageSize),
+			}),
+		]);
+		return {
+			totalCount,
+			bannerData,
+		};
+	}
 };
 
 const getBannerById = async (bannerId) => {
@@ -175,6 +192,17 @@ const updateBanner = async (bannerId, body, image) => {
 	});
 };
 
+const changeBannerPaidStatus = async (bannerId) => {
+	return await prisma.bannerAds.update({
+		where: {
+			id: bannerId,
+		},
+		data: {
+			isPaid: true,
+		},
+	});
+};
+
 module.exports = {
 	processAndUpload,
 	saveAdBanner,
@@ -182,4 +210,5 @@ module.exports = {
 	getBannerById,
 	deleteBannerById,
 	updateBanner,
+	changeBannerPaidStatus,
 };
