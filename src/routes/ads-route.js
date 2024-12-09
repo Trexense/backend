@@ -295,6 +295,11 @@ module.exports = router;
  *         schema:
  *           type: integer
  *         description: Number of items per page
+ *       - in: query
+ *         name: isPaid
+ *         schema:
+ *           type: boolean
+ *         description: Paid status
  *     responses:
  *       200:
  *         description: List of all banners
