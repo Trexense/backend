@@ -69,6 +69,8 @@ router
 		planController.deleteHotelFromPlan
 	);
 
+router.route('/itinerary').post(authAccess, planController.generateItinerary);
+
 module.exports = router;
 
 /**
@@ -307,7 +309,7 @@ module.exports = router;
  */
 /**
  * @swagger
- * /detail/{dayId}/activity:
+ * /plans/detail/{dayId}/activity:
  *   post:
  *     summary: Add a new activity to a plan detail by dayId
  *     tags: [Plans]
@@ -364,7 +366,7 @@ module.exports = router;
  */
 /**
  * @swagger
- * /detail/{dayId}/hotel:
+ * /plans/detail/{dayId}/hotel:
  *   post:
  *     summary: Add a new hotel to a plan detail by dayId
  *     tags: [Plans]
@@ -406,7 +408,7 @@ module.exports = router;
  */
 /**
  * @swagger
- * /activity/{activityId}:
+ * /plans/activity/{activityId}:
  *   delete:
  *     summary: Delete an activity by activityId
  *     tags: [Plans]
@@ -446,7 +448,7 @@ module.exports = router;
  */
 /**
  * @swagger
- * /hotel/{hotelPlanId}:
+ * /plans/hotel/{hotelPlanId}:
  *   delete:
  *     summary: Delete a hotel plan by hotelPlanId
  *     tags: [Plans]
@@ -480,4 +482,43 @@ module.exports = router;
  *             example:
  *               status: 404
  *               message: Hotel plan not found
+ */
+
+/**
+ * @swagger
+ * /plans/itinerary:
+ *   post:
+ *     summary: Get Itinerary based on prompt
+ *     tags: [Plans]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               prompt:
+ *                 type: string
+ *                 example: Give me activity idea
+ *             required:
+ *               - prompt
+ *     responses:
+ *       "200":
+ *         description: Success
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 200
+ *               message: Success
+ *               data:
+ *                 response: string
+ *       "400":
+ *         description: Validation Error
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 400
+ *               message: Invalid request payload
  */

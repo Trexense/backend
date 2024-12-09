@@ -92,6 +92,16 @@ const deleteHotelFromPlan = catchAsync(async (req, res) => {
 	});
 });
 
+const generateItinerary = catchAsync(async (req, res) => {
+	const result = await planService.generateItinerary(req.body.prompt);
+
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
 module.exports = {
 	createPlan,
 	getPlan,
@@ -102,4 +112,5 @@ module.exports = {
 	deleteActivity,
 	addHotelToPlan,
 	deleteHotelFromPlan,
+	generateItinerary,
 };
