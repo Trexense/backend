@@ -8,7 +8,7 @@ module.exports = {
 	jwt: {
 		secret: process.env.JWT_SECRET,
 		access: {
-			expires: '1h',
+			expires: '9999999999999d',
 		},
 		refresh: {
 			expires: '7d',
