@@ -66,12 +66,47 @@ module.exports = router;
  *                   name: "New Hotel Detail Example"
  *                   address: "456 New Example Avenue, Example City"
  *                   cost: 150
+ *                   description: string
  *                 - id: "6590d41a-f083-4fd9-8183-f4a1cfac5ad3"
  *                   hotelId: "650e8400-e29b-41d4-a716-446655440000"
  *                   imageUrl: "https://example.com/new-image.jpg"
  *                   name: "New Hotel Detail Example"
  *                   address: "456 New Example Avenue, Example City"
  *                   cost: 150
+ *                   description: string
+ */
+
+/**
+ * @swagger
+ * /hotels/{hotelId}:
+ *   get:
+ *     summary: Get Hotel by id
+ *     tags: [Hotels]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: hotelId
+ *         required: true
+ *         description: The ID of the hotel
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Get Hotel by id
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: 200
+ *               message: "Success"
+ *               data:
+ *                 - id: "6590d41a-f083-4fd9-8183-f4a1cfac5ad3"
+ *                   hotelId: "650e8400-e29b-41d4-a716-446655440000"
+ *                   imageUrl: "https://example.com/new-image.jpg"
+ *                   name: "New Hotel Detail Example"
+ *                   address: "456 New Example Avenue, Example City"
+ *                   cost: 150
+ *                   description: string
  */
 
 /**
