@@ -65,6 +65,7 @@ const addClick = async (userId, hotelId) => {
 			throw error;
 		}
 		if (error.code === 'P2002') {
+			console.log(error);
 			return {
 				message:
 					'Data already exists. This user has already bookmarked this hotel.',
@@ -128,6 +129,26 @@ const getAllHotel = async () => {
 	return await prisma.hotel.findMany({});
 };
 
+const recommendation = async (userId) => {
+	const recommendation = await axios.get(
+		`${config.machine_learning.baseUrl}/recommend-hotel/${userId}`
+	);
+
+	const data = recommendation.data.recommendation;
+	let hotelId = [];
+	data.forEach((element) => {
+		hotelId.push(element.hotelid);
+	});
+
+	return await prisma.hotel.findMany({
+		where: {
+			id: {
+				in: hotelId,
+			},
+		},
+	});
+};
+
 module.exports = {
 	nearbyHotel,
 	addClick,
@@ -136,4 +157,5 @@ module.exports = {
 	getClick,
 	getBookmark,
 	getAllHotel,
+	recommendation,
 };

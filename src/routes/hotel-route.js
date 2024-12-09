@@ -7,6 +7,7 @@ const { authAccess } = require('../middlewares/auth');
 const router = express.Router();
 
 router.route('/').get(hotelController.getAllHotel);
+router.route('/recommendation').get(authAccess, hotelController.recommendation);
 
 router
 	.route('/nearby')
