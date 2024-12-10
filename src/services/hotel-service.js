@@ -150,23 +150,32 @@ const recommendation = async (userId) => {
 };
 
 const topRecommendation = async (userId, number) => {
-	const recommendation = await axios.get(
-		`${config.machine_learning.baseUrl}/recommend-hotel/${userId}/${number}`
-	);
+	try {
+		const recommendation = await axios.get(
+			`${config.machine_learning.baseUrl}/recommend-hotel/${userId}/${number}`
+		);
 
-	const data = recommendation.data.recommendation;
-	let hotelId = [];
-	data.forEach((element) => {
-		hotelId.push(element.hotelid);
-	});
+		const data = recommendation.data.recommendation;
+		let hotelId = [];
+		data.forEach((element) => {
+			hotelId.push(element.hotelid);
+		});
 
-	return await prisma.hotelDetail.findMany({
-		where: {
-			hotelId: {
-				in: hotelId,
+		return await prisma.hotelDetail.findMany({
+			where: {
+				hotelId: {
+					in: hotelId,
+				},
 			},
-		},
-	});
+		});
+	} catch (error) {
+		return await prisma.hotelDetail.findMany({
+			orderBy: {
+				id: 'asc',
+			},
+			take: 6,
+		});
+	}
 };
 
 const searchHotel = async (hotelName) => {
