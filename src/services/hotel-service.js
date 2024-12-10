@@ -170,7 +170,7 @@ const topRecommendation = async (userId, number) => {
 };
 
 const searchHotel = async (hotelName) => {
-	return await prisma.hotel.findMany({
+	return await prisma.hotelDetail.findMany({
 		where: {
 			name: {
 				contains: hotelName,
