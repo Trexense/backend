@@ -169,6 +169,17 @@ const topRecommendation = async (userId, number) => {
 	});
 };
 
+const searchHotel = async (hotelName) => {
+	return await prisma.hotel.findMany({
+		where: {
+			name: {
+				contains: hotelName,
+				mode: 'insensitive',
+			},
+		},
+	});
+};
+
 module.exports = {
 	nearbyHotel,
 	addClick,
@@ -180,4 +191,5 @@ module.exports = {
 	recommendation,
 	getHotel,
 	topRecommendation,
+	searchHotel,
 };

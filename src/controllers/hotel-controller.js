@@ -96,11 +96,17 @@ const getHotel = catchAsync(async (req, res) => {
 });
 
 const topRecommendation = catchAsync(async (req, res) => {
-	console.log('ini');
-	const result = await hotelService.topRecommendation(
-		req.user.id,
-		req.params.number
-	);
+	const result = await hotelService.topRecommendation(req.user.id, 6);
+
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
+const searchHotel = catchAsync(async (req, res) => {
+	const result = await hotelService.searchHotel(req.query.name);
 
 	res.status(httpStatus.status.OK).send({
 		status: httpStatus.status.OK,
@@ -120,4 +126,5 @@ module.exports = {
 	recommendation,
 	getHotel,
 	topRecommendation,
+	searchHotel,
 };

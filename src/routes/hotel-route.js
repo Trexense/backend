@@ -6,8 +6,11 @@ const { authAccess } = require('../middlewares/auth');
 
 const router = express.Router();
 
+router.route('/search').get(hotelController.searchHotel);
 router.route('/').get(hotelController.getAllHotel);
-router.route('/recommendation').get(authAccess, hotelController.recommendation);
+router
+	.route('/recommendation')
+	.get(authAccess, hotelController.topRecommendation);
 router
 	.route('/recommendation/top/:number')
 	.get(authAccess, hotelController.topRecommendation);
