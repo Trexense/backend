@@ -8,6 +8,9 @@ const router = express.Router();
 
 router.route('/').get(hotelController.getAllHotel);
 router.route('/recommendation').get(authAccess, hotelController.recommendation);
+router
+	.route('/recommendation/top/:number')
+	.get(authAccess, hotelController.topRecommendation);
 
 router
 	.route('/nearby')
