@@ -140,7 +140,7 @@ const recommendation = async (userId) => {
 		hotelId.push(element.hotelid);
 	});
 
-	return await prisma.hotel.findMany({
+	return await prisma.hotelDetail.findMany({
 		where: {
 			id: {
 				in: hotelId,
