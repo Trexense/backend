@@ -40,7 +40,7 @@ const nearbyHotel = async (streetName) => {
 const getHotel = async (hotelId) => {
 	const hotel = await prisma.hotelDetail.findFirst({
 		where: {
-			id: hotelId,
+			hotelId: hotelId,
 		},
 	});
 
@@ -149,6 +149,37 @@ const recommendation = async (userId) => {
 	});
 };
 
+const topRecommendation = async (userId, number) => {
+	const recommendation = await axios.get(
+		`${config.machine_learning.baseUrl}/recommend-hotel/${userId}/${number}`
+	);
+
+	const data = recommendation.data.recommendation;
+	let hotelId = [];
+	data.forEach((element) => {
+		hotelId.push(element.hotelid);
+	});
+
+	return await prisma.hotelDetail.findMany({
+		where: {
+			hotelId: {
+				in: hotelId,
+			},
+		},
+	});
+};
+
+const searchHotel = async (hotelName) => {
+	return await prisma.hotel.findMany({
+		where: {
+			name: {
+				contains: hotelName,
+				mode: 'insensitive',
+			},
+		},
+	});
+};
+
 module.exports = {
 	nearbyHotel,
 	addClick,
@@ -159,4 +190,6 @@ module.exports = {
 	getAllHotel,
 	recommendation,
 	getHotel,
+	topRecommendation,
+	searchHotel,
 };
