@@ -53,7 +53,11 @@ const getPlanById = async (planId) => {
 			planDetails: {
 				include: {
 					activities: true,
-					hotel: true,
+					hotel: {
+						include: {
+							hotelDetail: true,
+						},
+					},
 				},
 			},
 		},
