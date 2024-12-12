@@ -42,6 +42,22 @@ const getHotel = async (hotelId) => {
 		where: {
 			hotelId: hotelId,
 		},
+		include: {
+			hotel: {
+				select: {
+					cozy: true,
+					niceView: true,
+					parking: true,
+					pool: true,
+					spa: true,
+					gym: true,
+					breakfast: true,
+					aesthetic: true,
+					laundry: true,
+					wifi: true,
+				},
+			},
+		},
 	});
 
 	if (!hotel) {

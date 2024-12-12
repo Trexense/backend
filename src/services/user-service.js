@@ -5,6 +5,15 @@ const prisma = require('../../prisma/index');
 const ApiError = require('../utils/apiError');
 const { generateResetPasswordToken } = require('./token-service');
 const config = require('../configs/index');
+const { v4: uuidv4 } = require('uuid');
+const { Storage } = require('@google-cloud/storage');
+const credentialsJson = Buffer.from(config.gcp.credential, 'base64').toString(
+	'utf-8'
+);
+
+const credential = JSON.parse(credentialsJson);
+
+const storage = new Storage({ credentials: credential });
 
 const getUserById = async (userId) => {
 	const user = await prisma.user.findUnique({
@@ -116,6 +125,55 @@ const userActivity = async (userId) => {
 	});
 };
 
+const uploadImage = (image) => {
+	try {
+		const shortUuid = uuidv4().split('-')[0];
+		const uniqueFileName = `profile/${Date.now()}-${shortUuid}.png`;
+		const customMetadata = {
+			contenType: 'image/*',
+			metadata: {
+				type: 'banner-image',
+			},
+		};
+
+		const bucket = storage.bucket(config.gcp.bucket);
+		const file = bucket.file(uniqueFileName);
+
+		const stream = file.createWriteStream({
+			resumable: false,
+			metadata: customMetadata,
+		});
+
+		stream.end(image.buffer);
+		stream.on('finish', () => {
+			console.log(`File uploaded successfully as ${uniqueFileName}`);
+		});
+
+		stream.on('error', (err) => {
+			console.error(`Failed to upload file: ${err.message}`);
+			throw new ApiError(httpStatus.status.INTERNAL_SERVER_ERROR, err.message);
+		});
+		console.log(uniqueFileName);
+		return uniqueFileName;
+	} catch (error) {
+		console.log(error);
+		throw new ApiError(httpStatus.status.INTERNAL_SERVER_ERROR, error.message);
+	}
+};
+
+const changeProfilePicture = async (userId, image) => {
+	const imageUrl = await uploadImage(image);
+	const url = `https://storage.googleapis.com/${config.gcp.bucket}/${imageUrl}`;
+	return await prisma.user.update({
+		where: {
+			id: userId,
+		},
+		data: {
+			profilePicture: url,
+		},
+	});
+};
+
 module.exports = {
 	getUserById,
 	updateUser,
@@ -123,4 +181,5 @@ module.exports = {
 	requestResetPassword,
 	resetPassword,
 	userActivity,
+	changeProfilePicture,
 };

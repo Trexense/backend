@@ -20,6 +20,23 @@ const updateUser = catchAsync(async (req, res) => {
 	});
 });
 
+const changeProfilePicture = catchAsync(async (req, res) => {
+	const image = req.file;
+	if (!image) {
+		throw new ApiError(
+			httpStatus.status.BAD_REQUEST,
+			'Please upload image files'
+		);
+	}
+
+	const result = await userService.changeProfilePicture(req.user.id, image);
+	res.status(httpStatus.status.OK).send({
+		status: httpStatus.status.OK,
+		message: 'Success',
+		data: result,
+	});
+});
+
 const deleteUser = catchAsync(async (req, res) => {
 	const result = await userService.deleteUser(req.params.userId);
 	res.status(httpStatus.status.OK).send({
@@ -88,4 +105,5 @@ module.exports = {
 	requestResetPassword,
 	resetPassword,
 	userActivity,
+	changeProfilePicture,
 };

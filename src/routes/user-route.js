@@ -8,6 +8,7 @@ const {
 	resetPasswordRequest,
 } = require('../validations/user-validation');
 const validate = require('../middlewares/validate');
+const upload = require('../utils/multer');
 
 const router = express.Router();
 
@@ -25,6 +26,14 @@ router
 		authAccess,
 		validate(resetPasswordRequest),
 		userController.requestResetPassword
+	);
+
+router
+	.route('/profile/picture')
+	.post(
+		authAccess,
+		upload.single('image'),
+		userController.changeProfilePicture
 	);
 
 router
