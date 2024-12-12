@@ -54,7 +54,7 @@ const filterImage = async (image) => {
 const uploadImage = async (resizedImage) => {
 	try {
 		const shortUuid = uuidv4().split('-')[0];
-		const uniqueFileName = `${Date.now()}-${shortUuid}.png`;
+		const uniqueFileName = `banners/${Date.now()}-${shortUuid}.png`;
 		const customMetadata = {
 			contenType: 'image/*',
 			metadata: {
@@ -77,6 +77,7 @@ const uploadImage = async (resizedImage) => {
 
 		stream.on('error', (err) => {
 			console.error(`Failed to upload file: ${err.message}`);
+			throw new ApiError(httpStatus.status.INTERNAL_SERVER_ERROR, err.message);
 		});
 		console.log(uniqueFileName);
 		return uniqueFileName;
