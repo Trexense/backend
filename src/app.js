@@ -41,7 +41,7 @@ app.use('*', cors());
 app.use(morgan('dev'));
 
 app.get('/', (req, res) => {
-	res.send('Hewoo Wudd');
+	res.send('Hewoo Wuddd');
 });
 
 app.listen(config.port, () => {
