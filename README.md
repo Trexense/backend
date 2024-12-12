@@ -27,17 +27,15 @@ You can view the API documentation [here](https://trexense.vercel.app/api-docs).
   
 ## Environment Variables
 
-The application requires the following environment variables to be set:
-
-DATABASE_URL="your postgre url"
-PORT=8080
-JWT_SECRET="secret for jwt"
-HERE_API_SECRET="api key for hereapi"
-EMAIL="email for send email verification"
-PASSWORD="password for email"
-BUCKET_NAME="bucket storage name"
-BACKEND_URL="this app url"
-CREDENTIAL="gcp service account url"
+- DATABASE_URL="your postgre url"
+- PORT=8080
+- JWT_SECRET="secret for jwt"
+- HERE_API_SECRET="api key for hereapi"
+- EMAIL="email for send email verification"
+- PASSWORD="password for email"
+- BUCKET_NAME="bucket storage name"
+- BACKEND_URL="this app url"
+- CREDENTIAL="gcp service account url"
 
 # Local Development Setup
 1. Clone the repository
