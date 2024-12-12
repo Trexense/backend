@@ -40,7 +40,6 @@ BACKEND_URL="this app url"
 CREDENTIAL="gcp service account url"
 
 # Local Development Setup
-
 1. Clone the repository
 2. Create the `.env` file with your configuration:
 
@@ -53,18 +52,10 @@ CREDENTIAL="gcp service account url"
    ```
 4. Run the Docker container
      ```bash
-   docker run -d\
-  --name trexense \
-  --env-file .env \
-  -p 8080:8080 \
-  trexense-server
+   docker run -d --name trexense --env-file .env -p 8080:8080 trexense-server
    ```
-
-## Members
+## Cloud Computing Members
 | Name | ID Bangkit |
 | ---- |----------- |
 | Gerry Desrian | C764B4KY1602 |
 | Maria Stephanie Rayadi | C172B4KX2408 | 
-
-
-
