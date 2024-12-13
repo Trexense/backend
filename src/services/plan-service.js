@@ -127,9 +127,22 @@ const deleteActivity = async (activityId) => {
 };
 
 const addHotelToPlan = async (dayId, body) => {
+	const plan = await prisma.plan.findFirst({
+		where: {
+			id: dayId,
+		},
+		include: {
+			planDetails: {
+				select: {
+					id: true,
+				},
+			},
+		},
+	});
+
 	return await prisma.hotelPlan.create({
 		data: {
-			planDetailId: dayId,
+			planDetailId: plan.planDetails[0].id,
 			...body,
 		},
 	});
